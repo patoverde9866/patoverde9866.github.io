@@ -24,21 +24,6 @@ function resetRecipeForm() {
     ingredientCostsContainer.innerHTML = '';
 }
 
-// Debouncing Function - Create this *outside* parseIngredients
-function debounce(func, delay) {
-    let timeoutId;
-    return function(...args) {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-            func.apply(this, args);
-        }, delay);
-    };
-}
-
-// Create the debounced function *once* here.
-const debouncedUpdate = debounce(updateIngredientPrices, 300);
-
-
 // --- Helper functions for form element creation ---
 function createInput(type, id, name, options = {}) {
     const { step, required, value, placeholder, ariaLabel } = options;
@@ -66,28 +51,26 @@ function createIngredientCostFormWithUnits(amount, unit, ingredient) {
     form.dataset.originalIngredient = `${amount} ${unit} ${ingredient}`;
     form.dataset.amount = parseAmount(amount); // Store the parsed numeric amount
 
-
     const unitsOptions = {
         g: "g", kg: "kg", ml: "ml", l: "l", oz: "oz",
         lb: "lb", tsp: "tsp", tbsp: "tbsp", cup: "cup",
         pint: "pint", quart: "quart", gallon: "gallon"
     };
 
-
     form.innerHTML = `
-    <h3>Ingredient Costs</h3>
-    <div class="ingredient-data">${amount} ${unit} ${ingredient}</div>
-    ${createLabel(`package-cost-${ingredient}`, 'Package Cost:')}
-    ${createInput('number', `package-cost-${ingredient}`, 'package-cost', { step: '0.01', required: true, ariaLabel: 'Package Cost' })}
+        <h3>Ingredient Costs</h3>
+        <div class="ingredient-data">${amount} ${unit} ${ingredient}</div>
+        ${createLabel(`package-cost-${ingredient}`, 'Package Cost:')}
+        ${createInput('number', `package-cost-${ingredient}`, 'package-cost', { step: '0.01', required: true, ariaLabel: 'Package Cost' })}
 
-    ${createLabel(`package-size-${ingredient}`, 'Package Size:')}
-    <div class="input-group">
-        ${createInput('number', `package-size-${ingredient}`, 'package-size', { required: true, ariaLabel: 'Package Size' })}
-        ${createSelect('package-unit', unitsOptions, unit)}
-    </div>
-    <label>Ingredient Price:</label>
-    <div class="ingredient-price"></div>
-`;
+        ${createLabel(`package-size-${ingredient}`, 'Package Size:')}
+        <div class="input-group">
+            ${createInput('number', `package-size-${ingredient}`, 'package-size', { required: true, ariaLabel: 'Package Size' })}
+            ${createSelect('package-unit', unitsOptions, unit)}
+        </div>
+        <label>Ingredient Price:</label>
+        <div class="ingredient-price"></div>
+    `;
     return form;
 }
 
@@ -101,20 +84,20 @@ function createIngredientCostFormWithoutUnits(amount, ingredient, amountValue) {
     form.dataset.amount = amountValue; // Store parsed amount
 
     form.innerHTML = `
-      <h3>Ingredient Costs</h3>
-      <div class="ingredient-data">${amount} ${ingredient}</div>
+          <h3>Ingredient Costs</h3>
+          <div class="ingredient-data">${amount} ${ingredient}</div>
 
-      ${createLabel(`package-cost-${ingredient}`, 'Package Cost:')}
-      ${createInput('number', `package-cost-${ingredient}`, 'package-cost', { step: '0.01', required: true, ariaLabel: 'Package Cost' })}
+          ${createLabel(`package-cost-${ingredient}`, 'Package Cost:')}
+          ${createInput('number', `package-cost-${ingredient}`, 'package-cost', { step: '0.01', required: true, ariaLabel: 'Package Cost' })}
 
-      ${createLabel(`quantity-${ingredient}`, 'Quantity (No. of items):')}
-      <div class="input-group">
-        ${createInput('number', `quantity-${ingredient}`, 'quantity', { required: true, ariaLabel: 'Quantity' })}
-        <span>Per Pack</span>
-      </div>
-        <label>Ingredient Price:</label>
-      <div class="ingredient-price"></div>
-    `;
+          ${createLabel(`quantity-${ingredient}`, 'Quantity (No. of items):')}
+          <div class="input-group">
+            ${createInput('number', `quantity-${ingredient}`, 'quantity', { required: true, ariaLabel: 'Quantity' })}
+            <span>Per Pack</span>
+          </div>
+            <label>Ingredient Price:</label>
+          <div class="ingredient-price"></div>
+        `;
 
     return form;
 }
@@ -175,7 +158,6 @@ function parseAmount(amountString) {
     }
 }
 
-
 // --- Error Handling ---
 function showError(form, message) {
     const priceDisplay = form.querySelector('.ingredient-price');
@@ -197,7 +179,7 @@ function updateIngredientPrices(form) {
     const packageSizeInput = form.querySelector('[name="package-size"]');
 
     if (packageSizeInput) {
-        // --- Unit-Based Calculation (remains largely the same, using convertUnits) ---
+        // --- Unit-Based Calculation ---
         const packageCost = parseFloat(form.querySelector('[name="package-cost"]').value);
         const packageSize = parseFloat(packageSizeInput.value);
         const packageUnit = form.querySelector('[name="package-unit"]').value;
@@ -232,7 +214,6 @@ function updateIngredientPrices(form) {
         priceDisplay.textContent = `${ingredientData} @ ${price.toFixed(2)}`;
         clearError(form);
 
-
     } else {
         // --- Quantity-Based Calculation ---
         const packageCost = parseFloat(form.querySelector('[name="package-cost"]').value);
@@ -253,7 +234,6 @@ function updateIngredientPrices(form) {
     }
 }
 
-
 // --- Ingredient Parsing ---
 function parseIngredients() {
     ingredientCostsContainer.innerHTML = '';
@@ -263,6 +243,7 @@ function parseIngredients() {
         "g", "kg", "ml", "l", "oz", "lb",
         "tsp", "tbsp", "cup", "pint", "quart", "gallon"
     ];
+
     lines.forEach(line => {
         const match = line.match(/^([\d./\s]+)\s*([a-zA-Z]*)?\s*(.+)$/);
 
@@ -278,27 +259,26 @@ function parseIngredients() {
                 unit = undefined; // Clear the unit, so it goes to the quantity-based form.
                 const costForm = createIngredientCostFormWithoutUnits(amount, ingredient, amountValue);
                 ingredientCostsContainer.appendChild(costForm);
-                //Attach Event Listeners
-                // Use the *same* debouncedUpdate function here:
+
+                // Attach Event Listeners Directly (No Debouncing)
                 const packageCostInput = costForm.querySelector('[name="package-cost"]');
                 const quantityInput = costForm.querySelector('[name="quantity"]');
-                packageCostInput.addEventListener('input', () => debouncedUpdate(costForm));
-                quantityInput.addEventListener('input', () => debouncedUpdate(costForm));
-
+                packageCostInput.addEventListener('input', () => updateIngredientPrices(costForm));
+                quantityInput.addEventListener('input', () => updateIngredientPrices(costForm));
 
             } else {
                 // Unit is recognized
                 const costForm = createIngredientCostFormWithUnits(amount, unit, ingredient);
                 ingredientCostsContainer.appendChild(costForm);
 
-                // Attach event listeners *AFTER* appending to the DOM:
-                // Use the *same* debouncedUpdate function here:
+                // Attach Event Listeners Directly (No Debouncing)
                 const packageCostInput = costForm.querySelector('[name="package-cost"]');
                 const packageSizeInput = costForm.querySelector('[name="package-size"]');
                 const packageUnitSelect = costForm.querySelector('[name="package-unit"]');
-                packageCostInput.addEventListener('input', () => debouncedUpdate(costForm));
-                packageSizeInput.addEventListener('input', () => debouncedUpdate(costForm));
-                packageUnitSelect.addEventListener('change', () => debouncedUpdate(costForm));
+
+                packageCostInput.addEventListener('input', () => updateIngredientPrices(costForm));
+                packageSizeInput.addEventListener('input', () => updateIngredientPrices(costForm));
+                packageUnitSelect.addEventListener('change', () => updateIngredientPrices(costForm));
             }
         } else {
             //Handle no match
@@ -359,11 +339,9 @@ nextButton.addEventListener('click', () => {
     const costForms = ingredientCostsContainer.querySelectorAll('.ingredient-cost-form');
 
     costForms.forEach(form => {
-
         const ingredientData = form.dataset.originalIngredient;
         const packageCost = form.querySelector('[name="package-cost"]').value;
         const ingredientPrice = form.querySelector('.ingredient-price').textContent;
-
 
         let packageSize = null;
         let packageUnit = null;
@@ -380,7 +358,7 @@ nextButton.addEventListener('click', () => {
             }
         } else {
             quantity = form.querySelector('[name="quantity"]').value;
-             if (!packageCost || !quantity || !ingredientPrice) {
+            if (!packageCost || !quantity || !ingredientPrice) {
                 alert(`Please fill in cost and quantity for ${ingredientData}`);
                 isFormValid = false;
                 return; // Important: Stop processing this form
@@ -388,12 +366,12 @@ nextButton.addEventListener('click', () => {
         }
 
         ingredientCosts.push({
-            ingredient: ingredientData, // Use the correct data
+            ingredient: ingredientData,
             packageCost,
             packageSize,
             packageUnit,
             quantity,
-            ingredientPrice, //Now included
+            ingredientPrice,
         });
     });
 
@@ -403,5 +381,4 @@ nextButton.addEventListener('click', () => {
         resetRecipeForm();
         switchToMainPage();
     } // No else needed - if it's not valid, we've already shown alerts.
-
 });
