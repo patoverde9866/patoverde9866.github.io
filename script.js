@@ -38,8 +38,8 @@ function debounce(func, delay) {
 
 // --- Helper functions for form element creation ---
 function createInput(type, id, name, options = {}) {
-    const { step, required, value, placeholder } = options;
-    return `<input type="${type}" id="${id}" name="${name}" ${step ? `step="${step}"` : ''} ${required ? 'required' : ''} ${value ? `value="${value}"` : ''} ${placeholder ? `placeholder="${placeholder}"` : ''}>`;
+    const { step, required, value, placeholder, ariaLabel } = options;
+    return `<input type="${type}" id="${id}" name="${name}" ${step ? `step="${step}"` : ''} ${required ? 'required' : ''} ${value ? `value="${value}"` : ''} ${placeholder ? `placeholder="${placeholder}"` : ''} ${ariaLabel ? `aria-label="${ariaLabel}"` : ''}>`;
 }
 
 function createLabel(htmlFor, text) {
@@ -51,7 +51,7 @@ function createSelect(name, options, selectedValue) {
     for (const value in options) {
         optionsHtml += `<option value="${value}" ${value === selectedValue ? 'selected' : ''}>${options[value]}</option>`;
     }
-    return `<select name="${name}">${optionsHtml}</select>`;
+    return `<select name="${name}" aria-label="${name}">${optionsHtml}</select>`;
 }
 
 // --- Ingredient Cost Form Creation Functions ---
@@ -75,11 +75,11 @@ function createIngredientCostFormWithUnits(amount, unit, ingredient) {
     <h3>Ingredient Costs</h3>
     <div class="ingredient-data">${amount} ${unit} ${ingredient}</div>
     ${createLabel(`package-cost-${ingredient}`, 'Package Cost:')}
-    ${createInput('number', `package-cost-${ingredient}`, 'package-cost', { step: '0.01', required: true })}
+    ${createInput('number', `package-cost-${ingredient}`, 'package-cost', { step: '0.01', required: true, ariaLabel: 'Package Cost' })}
 
     ${createLabel(`package-size-${ingredient}`, 'Package Size:')}
     <div class="input-group">
-        ${createInput('number', `package-size-${ingredient}`, 'package-size', { required: true })}
+        ${createInput('number', `package-size-${ingredient}`, 'package-size', { required: true, ariaLabel: 'Package Size' })}
         ${createSelect('package-unit', unitsOptions, unit)}
     </div>
     <label>Ingredient Price:</label>
@@ -102,11 +102,11 @@ function createIngredientCostFormWithoutUnits(amount, ingredient, amountValue) {
       <div class="ingredient-data">${amount} ${ingredient}</div>
 
       ${createLabel(`package-cost-${ingredient}`, 'Package Cost:')}
-      ${createInput('number', `package-cost-${ingredient}`, 'package-cost', { step: '0.01', required: true })}
+      ${createInput('number', `package-cost-${ingredient}`, 'package-cost', { step: '0.01', required: true, ariaLabel: 'Package Cost' })}
 
       ${createLabel(`quantity-${ingredient}`, 'Quantity (No. of items):')}
       <div class="input-group">
-        ${createInput('number', `quantity-${ingredient}`, 'quantity', { required: true })}
+        ${createInput('number', `quantity-${ingredient}`, 'quantity', { required: true, ariaLabel: 'Quantity' })}
         <span>Per Pack</span>
       </div>
         <label>Ingredient Price:</label>
@@ -329,19 +329,25 @@ menuItems.forEach(item => {
 
 // --- Next Button Event Listener ---
 nextButton.addEventListener('click', () => {
+    // Call parseIngredients() to ensure forms are created:
+    parseIngredients();
+
     // Input Validation
     const title = document.getElementById('recipe-title').value.trim();
     const servings = document.getElementById('recipe-servings').value;
     const units = document.getElementById('recipe-units').value;
     const ingredients = document.getElementById('recipe-ingredients').value.trim();
+    let isFormValid = true; // Flag for form validity
 
     if (!title || !ingredients) {
         alert('Please fill in all required fields.');
-        return;
+        isFormValid = false; // Set flag
+        return; // Stop if basic fields are empty.
     }
 
     if (isNaN(parseInt(servings)) || parseInt(servings) <= 0) {
         alert('Please enter a valid number for servings.');
+        isFormValid = false;
         return;
     }
 
@@ -355,6 +361,7 @@ nextButton.addEventListener('click', () => {
         const packageCost = form.querySelector('[name="package-cost"]').value;
         const ingredientPrice = form.querySelector('.ingredient-price').textContent;
 
+
         let packageSize = null;
         let packageUnit = null;
         let quantity = null;
@@ -365,13 +372,15 @@ nextButton.addEventListener('click', () => {
             packageUnit = form.querySelector('[name="package-unit"]').value;
             if (!packageCost || !packageSize || !ingredientPrice) {
                 alert(`Please fill in cost and size for ${ingredientData}`);
-                return;
+                isFormValid = false;
+                return; // Important: Stop processing this form
             }
         } else {
             quantity = form.querySelector('[name="quantity"]').value;
              if (!packageCost || !quantity || !ingredientPrice) {
                 alert(`Please fill in cost and quantity for ${ingredientData}`);
-                return;
+                isFormValid = false;
+                return; // Important: Stop processing this form
             }
         }
 
@@ -385,13 +394,11 @@ nextButton.addEventListener('click', () => {
         });
     });
 
-    // Data Submission (Simulated)
+    // Data Submission (Simulated) - ONLY if the form is valid
+    if (isFormValid) {
         alert(`Recipe Data:\n${JSON.stringify({ title, servings, units, ingredients, ingredientCosts }, null, 2)}`);
+        resetRecipeForm();
+        switchToMainPage();
+    } // No else needed - if it's not valid, we've already shown alerts.
 
-
-    resetRecipeForm();
-    switchToMainPage();
 });
-    </script>
-</body>
-</html>
