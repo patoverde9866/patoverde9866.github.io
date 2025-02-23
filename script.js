@@ -24,7 +24,7 @@ function resetRecipeForm() {
     ingredientCostsContainer.innerHTML = '';
 }
 
-// Debouncing Function
+// Debouncing Function - Create this *outside* parseIngredients
 function debounce(func, delay) {
     let timeoutId;
     return function(...args) {
@@ -34,6 +34,9 @@ function debounce(func, delay) {
         }, delay);
     };
 }
+
+// Create the debounced function *once* here.
+const debouncedUpdate = debounce(updateIngredientPrices, 300);
 
 
 // --- Helper functions for form element creation ---
@@ -276,7 +279,7 @@ function parseIngredients() {
                 const costForm = createIngredientCostFormWithoutUnits(amount, ingredient, amountValue);
                 ingredientCostsContainer.appendChild(costForm);
                 //Attach Event Listeners
-                const debouncedUpdate = debounce(updateIngredientPrices, 300);
+                // Use the *same* debouncedUpdate function here:
                 const packageCostInput = costForm.querySelector('[name="package-cost"]');
                 const quantityInput = costForm.querySelector('[name="quantity"]');
                 packageCostInput.addEventListener('input', () => debouncedUpdate(costForm));
@@ -289,7 +292,7 @@ function parseIngredients() {
                 ingredientCostsContainer.appendChild(costForm);
 
                 // Attach event listeners *AFTER* appending to the DOM:
-                const debouncedUpdate = debounce(updateIngredientPrices, 300);
+                // Use the *same* debouncedUpdate function here:
                 const packageCostInput = costForm.querySelector('[name="package-cost"]');
                 const packageSizeInput = costForm.querySelector('[name="package-size"]');
                 const packageUnitSelect = costForm.querySelector('[name="package-unit"]');
