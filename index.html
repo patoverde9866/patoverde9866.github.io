@@ -1,12 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0;url=https://www.instagram.com/primemetals_peru/">
-    <title>PRIME METALS CORPORATION</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CookBook</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Optional: you can also add a message and a link for users in case the redirection does not work -->
-    <p>Si no has sido redireccionado a Nuestra pagina, sigue este <a href='https://drive.google.com/drive/folders/1Ayx2KL0BFnhPV2cxe1seH5FKB-MHGtXk'>link</a>.</p>
+    <div class="container">
+        <div id="main-page">
+            <header>
+                <h1 class="logo">CookBook</h1>
+            </header>
+            <main>
+                <button class="menu-item add-recipe">
+                    <span>Add Recipe</span>
+                    <span class="icon plus-icon">+</span>
+                </button>
+                <button class="menu-item">
+                    <span>My Recipes</span>
+                    <span class="icon book-icon">📖</span>
+                </button>
+                <button class="menu-item">
+                    <span>Search</span>
+                    <span class="icon search-icon">🔍</span>
+                </button>
+            </main>
+        </div>
+
+        <div id="recipe-page" style="display: none;">
+            <div class="recipe-form">
+                <h2>New Recipe</h2>
+                <form id="recipe-form">
+                    <label for="recipe-title">Title:</label>
+                    <input type="text" id="recipe-title" name="title" required>
+
+                    <label for="recipe-servings">Servings:</label>
+                    <input type="number" id="recipe-servings" name="servings" value="1" min="1" required>
+
+                    <label for="recipe-units">Units Type:</label>
+                    <select id="recipe-units" name="units">
+                        <option value="metric">Metric (International)</option>
+                        <option value="us">US Standard</option>
+                    </select>
+
+                    <label for="recipe-ingredients">Ingredients:</label>
+                    <textarea id="recipe-ingredients" name="ingredients" rows="5" placeholder="Enter one ingredient per line in the format: AMOUNT UNIT INGREDIENT (e.g., 1 1/2 cups cornflour)" required></textarea>
+                    <div id="ingredient-costs-container">
+                        </div>
+
+                    <button type="button" class="button-next" id="next-button">Next</button>
+                    <button type="button" class="button-cancel" id="cancel-button">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
