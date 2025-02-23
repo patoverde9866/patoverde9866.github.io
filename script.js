@@ -51,26 +51,26 @@ function createIngredientCostFormWithUnits(amount, unit, ingredient) {
     form.dataset.originalIngredient = `${amount} ${unit} ${ingredient}`;
     form.dataset.amount = parseAmount(amount); // Store the parsed numeric amount
 
+
     const unitsOptions = {
         g: "g", kg: "kg", ml: "ml", l: "l", oz: "oz",
         lb: "lb", tsp: "tsp", tbsp: "tbsp", cup: "cup",
         pint: "pint", quart: "quart", gallon: "gallon"
     };
 
-    form.innerHTML = `
-        <h3>Ingredient Costs</h3>
-        <div class="ingredient-data">${amount} ${unit} ${ingredient}</div>
-        ${createLabel(`package-cost-${ingredient}`, 'Package Cost:')}
-        ${createInput('number', `package-cost-${ingredient}`, 'package-cost', { step: '0.01', required: true, ariaLabel: 'Package Cost' })}
 
-        ${createLabel(`package-size-${ingredient}`, 'Package Size:')}
-        <div class="input-group">
-            ${createInput('number', `package-size-${ingredient}`, 'package-size', { required: true, ariaLabel: 'Package Size' })}
-            ${createSelect('package-unit', unitsOptions, unit)}
-        </div>
-        <label>Ingredient Price:</label>
-        <div class="ingredient-price"></div>
-    `;
+    form.innerHTML = `
+    <h3>Ingredient Costs</h3>
+    <div class="ingredient-data">${amount} ${unit} ${ingredient}</div>
+    ${createLabel(`package-cost-${ingredient}`, 'Package Cost:')}
+    ${createInput('number', `package-cost-${ingredient}`, 'package-cost', { step: '0.01', required: true, ariaLabel: 'Package Cost' })}
+
+    ${createLabel(`package-size-${ingredient}`, 'Package Size:')}
+    <div class="input-group">
+        ${createInput('number', `package-size-${ingredient}`, 'package-size', { required: true, ariaLabel: 'Package Size' })}
+        ${createSelect('package-unit', unitsOptions, unit)}
+    </div>
+`;  // Removed Ingredient Price label and div
     return form;
 }
 
@@ -84,25 +84,23 @@ function createIngredientCostFormWithoutUnits(amount, ingredient, amountValue) {
     form.dataset.amount = amountValue; // Store parsed amount
 
     form.innerHTML = `
-          <h3>Ingredient Costs</h3>
-          <div class="ingredient-data">${amount} ${ingredient}</div>
+      <h3>Ingredient Costs</h3>
+      <div class="ingredient-data">${amount} ${ingredient}</div>
 
-          ${createLabel(`package-cost-${ingredient}`, 'Package Cost:')}
-          ${createInput('number', `package-cost-${ingredient}`, 'package-cost', { step: '0.01', required: true, ariaLabel: 'Package Cost' })}
+      ${createLabel(`package-cost-${ingredient}`, 'Package Cost:')}
+      ${createInput('number', `package-cost-${ingredient}`, 'package-cost', { step: '0.01', required: true, ariaLabel: 'Package Cost' })}
 
-          ${createLabel(`quantity-${ingredient}`, 'Quantity (No. of items):')}
-          <div class="input-group">
-            ${createInput('number', `quantity-${ingredient}`, 'quantity', { required: true, ariaLabel: 'Quantity' })}
-            <span>Per Pack</span>
-          </div>
-            <label>Ingredient Price:</label>
-          <div class="ingredient-price"></div>
-        `;
+      ${createLabel(`quantity-${ingredient}`, 'Quantity (No. of items):')}
+      <div class="input-group">
+        ${createInput('number', `quantity-${ingredient}`, 'quantity', { required: true, ariaLabel: 'Quantity' })}
+        <span>Per Pack</span>
+      </div>
+    `; // Removed Ingredient Price label and div
 
     return form;
 }
 
-// --- Unit Conversion (Simplified - Consider a Library!) ---
+// --- Unit Conversion (Simplified - Consider a Library!) ---  (Still needed for parsing ingredients)
 const unitConversions = {
     g: { kg: 0.001 },
     kg: { g: 1000 },
@@ -131,8 +129,7 @@ function convertUnits(amount, fromUnit, toUnit) {
     console.warn(`Cannot convert from ${fromUnit} to ${toUnit}`);
     return NaN; // Indicate an error
 }
-
-// --- Amount Parsing (Handles Fractions) ---
+// --- Amount Parsing (Handles Fractions) --- (Still needed)
 function parseAmount(amountString) {
     try {
         // Handle simple fractions (e.g., "1/2") and mixed numbers (e.g., "1 1/2")
@@ -160,79 +157,15 @@ function parseAmount(amountString) {
 
 // --- Error Handling ---
 function showError(form, message) {
-    const priceDisplay = form.querySelector('.ingredient-price');
-    priceDisplay.textContent = message;
-    priceDisplay.classList.add('error'); // Add an error class for styling
-    // Optionally highlight the input field(s) that caused the error.
+    //Since we don't have priceDisplay now, we will add error message div
+    const errorDiv = document.createElement('div');
+    errorDiv.textContent = message;
+    errorDiv.classList.add('error');
+    form.appendChild(errorDiv); // Append error message directly to the form
 }
 
-function clearError(form) {
-    const priceDisplay = form.querySelector('.ingredient-price');
-    priceDisplay.textContent = '';
-    priceDisplay.classList.remove('error');
-}
 
-// --- Price Calculation ---
-function updateIngredientPrices(form) {
-    const ingredientData = form.dataset.originalIngredient;
-    const priceDisplay = form.querySelector('.ingredient-price');
-    const packageSizeInput = form.querySelector('[name="package-size"]');
-
-    if (packageSizeInput) {
-        // --- Unit-Based Calculation ---
-        const packageCost = parseFloat(form.querySelector('[name="package-cost"]').value);
-        const packageSize = parseFloat(packageSizeInput.value);
-        const packageUnit = form.querySelector('[name="package-unit"]').value;
-
-        const match = ingredientData.match(/^([\d./\s]+)\s*([a-zA-Z]+)?/);
-        if (!match) {
-            showError(form, "Error parsing ingredient");
-            return;
-        }
-
-        const amount = parseAmount(match[1]); // Use parseAmount
-        const unit = match[2] || '';
-
-        if (isNaN(packageCost) || isNaN(packageSize) || isNaN(amount)) {
-            clearError(form); // Clear any previous error
-            return;
-        }
-        if (packageCost <= 0 || packageSize <= 0) {
-            showError(form, "Cost and size must be greater than zero.");
-            return;
-        }
-        let convertedAmount = amount;
-
-        if (unit && packageUnit) { // Only convert if BOTH units are present.
-            convertedAmount = convertUnits(amount, unit, packageUnit);
-            if (isNaN(convertedAmount)) {
-                showError(form, `Cannot convert ${unit} to ${packageUnit}`);
-                return;
-            }
-        }
-        const price = (packageCost / packageSize) * convertedAmount;
-        priceDisplay.textContent = `${ingredientData} @ ${price.toFixed(2)}`;
-        clearError(form);
-
-    } else {
-        // --- Quantity-Based Calculation ---
-        const packageCost = parseFloat(form.querySelector('[name="package-cost"]').value);
-        const quantity = parseFloat(form.querySelector('[name="quantity"]').value);
-        const amount = parseFloat(form.dataset.amount); // Use the PARSED amount
-
-        if (isNaN(packageCost) || isNaN(quantity) || isNaN(amount)) {
-            clearError(form);
-            return;
-        }
-        if (packageCost <= 0 || quantity <= 0) {
-            showError(form, "Cost and quantity must be greater than zero.");
-            return;
-        }
-        const price = (packageCost / quantity) * amount;
-        priceDisplay.textContent = `${ingredientData} @ ${price.toFixed(2)}`;
-        clearError(form);
-    }
-}
+// --- Price Calculation --- REMOVED, no longer needed
 
 // --- Ingredient Parsing ---
 function parseIngredients() {
@@ -243,7 +176,6 @@ function parseIngredients() {
         "g", "kg", "ml", "l", "oz", "lb",
         "tsp", "tbsp", "cup", "pint", "quart", "gallon"
     ];
-
     lines.forEach(line => {
         const match = line.match(/^([\d./\s]+)\s*([a-zA-Z]*)?\s*(.+)$/);
 
@@ -260,25 +192,10 @@ function parseIngredients() {
                 const costForm = createIngredientCostFormWithoutUnits(amount, ingredient, amountValue);
                 ingredientCostsContainer.appendChild(costForm);
 
-                // Attach Event Listeners Directly (No Debouncing)
-                const packageCostInput = costForm.querySelector('[name="package-cost"]');
-                const quantityInput = costForm.querySelector('[name="quantity"]');
-                packageCostInput.addEventListener('input', () => updateIngredientPrices(costForm));
-                quantityInput.addEventListener('input', () => updateIngredientPrices(costForm));
-
             } else {
                 // Unit is recognized
                 const costForm = createIngredientCostFormWithUnits(amount, unit, ingredient);
                 ingredientCostsContainer.appendChild(costForm);
-
-                // Attach Event Listeners Directly (No Debouncing)
-                const packageCostInput = costForm.querySelector('[name="package-cost"]');
-                const packageSizeInput = costForm.querySelector('[name="package-size"]');
-                const packageUnitSelect = costForm.querySelector('[name="package-unit"]');
-
-                packageCostInput.addEventListener('input', () => updateIngredientPrices(costForm));
-                packageSizeInput.addEventListener('input', () => updateIngredientPrices(costForm));
-                packageUnitSelect.addEventListener('change', () => updateIngredientPrices(costForm));
             }
         } else {
             //Handle no match
@@ -341,7 +258,8 @@ nextButton.addEventListener('click', () => {
     costForms.forEach(form => {
         const ingredientData = form.dataset.originalIngredient;
         const packageCost = form.querySelector('[name="package-cost"]').value;
-        const ingredientPrice = form.querySelector('.ingredient-price').textContent;
+        // Removed: const ingredientPrice = form.querySelector('.ingredient-price').textContent;
+
 
         let packageSize = null;
         let packageUnit = null;
@@ -351,17 +269,17 @@ nextButton.addEventListener('click', () => {
         if (packageSizeInput) {
             packageSize = packageSizeInput.value;
             packageUnit = form.querySelector('[name="package-unit"]').value;
-            if (!packageCost || !packageSize || !ingredientPrice) {
+             if (!packageCost || !packageSize) { //Removed ingredient price check
                 alert(`Please fill in cost and size for ${ingredientData}`);
                 isFormValid = false;
-                return; // Important: Stop processing this form
+                return;
             }
         } else {
             quantity = form.querySelector('[name="quantity"]').value;
-            if (!packageCost || !quantity || !ingredientPrice) {
+            if (!packageCost || !quantity) { // Removed ingredient price check.
                 alert(`Please fill in cost and quantity for ${ingredientData}`);
                 isFormValid = false;
-                return; // Important: Stop processing this form
+                return;
             }
         }
 
@@ -371,7 +289,7 @@ nextButton.addEventListener('click', () => {
             packageSize,
             packageUnit,
             quantity,
-            ingredientPrice,
+            // Removed ingredientPrice
         });
     });
 
