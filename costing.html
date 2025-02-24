@@ -3,43 +3,48 @@
 <head>
 <title>Vanilla Cake Costing</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* --- CSS --- */
 body {
-  font-family: sans-serif;
-  background-color: #e0f2f1;
+  font-family: 'Roboto', sans-serif; /* Use Roboto as the base font */
+  background-color: #f0f0f0; /* Same background as index.html */
   margin: 0;
   padding: 0;
 }
 
-.costing-container { /* Changed class name */
-  width: 95%;
-  margin: 10px auto;
+.costing-container {
+  width: 80%;          /* Match index.html's container width */
+  max-width: 400px;    /* Match index.html's max-width */
+  margin: 20px auto;   /* Center and add top/bottom margin */
   background-color: white;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
+  padding: 20px;
+  border-radius: 10px; /* Match index.html's border-radius */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Match index.html's shadow */
+  overflow-x: auto; /* Keep this for table overflow */
 }
 
-.logo { /* Changed to class selector */
+.logo {
   text-align: center;
-  color: #333;
+  color: #1e406e;     /* Match index.html's logo color */
   margin-bottom: 10px;
-  cursor: pointer; /* Indicate editability */
-  font-family: 'Pacifico', cursive; /*Added font family */
-  font-size: 2.5em; /*Added font size */
+  cursor: pointer;
+  font-family: 'Pacifico', cursive;
+  font-size: 2.5em;
 }
-.logo:focus { /* Changed to class selector */
-  outline: 2px solid #4CAF50; /* Visual feedback on focus */
-  background-color: #f0f8ff;  /* Light blue background */
+.logo:focus {
+  outline: 2px solid #4CAF50;
+  background-color: #f0f8ff;
 }
 
 .summary-table {
   width:100%;
+  margin-bottom: 20px; /* Add some space between tables */
 }
 
-.ingredients-table, .summary-table { /* Target both tables */
+.ingredients-table, .summary-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 10px;
@@ -58,29 +63,27 @@ body {
 }
 
 .summary-table th{
-    font-weight:bold; /*Make labels bold */
+    font-weight:bold;
 }
 
-/* --- Ingredient Box Styling --- */
 .ingredient-item {
     border: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 10px;
     background-color: #f9f9f9;
     border-radius: 4px;
-    position: relative; /* For positioning the delete button */
-    z-index: 10; /* Ensure it's on top */
+    position: relative;
+    z-index: 10;
 }
 .ingredient-item td{
      border: none;
 }
 
-/* --- Delete Button Styling --- */
 .delete-button {
     position: absolute;
     top: 5px;
     right: 5px;
-    background-color: #f44336; /* Red */
+    background-color: #f44336;
     color: white;
     border: none;
     padding: 3px 6px;
@@ -92,15 +95,14 @@ body {
     background-color:#d82c20;
 }
 
-/* --- Add Ingredient Button Styling ---*/
 #addIngredientBtn {
-  background-color: #4CAF50; /* Green */
+  background-color: #4CAF50;
   color: white;
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-bottom: 10px; /* Space above the button */
+  margin-bottom: 10px;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -111,8 +113,10 @@ body {
 
 /* --- Mobile-Specific Styles (Media Query) --- */
 @media (max-width: 768px) {
-  .costing-container { /* Changed class name */
-    width: 98%;
+  .costing-container {
+    width: 95%; /* Slightly wider on mobile, but still constrained */
+    /* max-width is already set, so no need to repeat */
+    padding: 10px; /* Reduce padding on smaller screens */
   }
 
   .summary-table {
@@ -121,7 +125,6 @@ body {
     margin-right: 0;
     margin-bottom: 1.5rem;
   }
-
 
   th, td {
     display: block;
@@ -137,24 +140,24 @@ body {
   }
 
  .ingredients-table td {
-    border: none; /* Important: Remove borders from individual cells */
+    border: none;
     position: relative;
     padding-left: 45%;
-    padding-top: 6px; /* Reduced padding */
+    padding-top: 6px;
     padding-bottom: 6px;
   }
   .ingredients-table td::before {
     position: absolute;
     top: 50%;
-    left: 4px;  /* Reduced from 6px */
-    width: 40%; /* Reduced from 45% */
+    left: 4px;
+    width: 40%;
     padding-right: 10px;
     white-space: nowrap;
     content: attr(data-label);
     font-weight: bold;
     transform: translateY(-50%);
     color: #555;
-    pointer-events: none; /*  VERY IMPORTANT */
+    pointer-events: none;
   }
 
   .ingredient-item input[type="number"],
@@ -174,12 +177,9 @@ body {
         margin: 0;
     }
     input[type=number] {
-         appearance: textfield; /* Standard */
-        -moz-appearance: textfield; /* Firefox */
+         appearance: textfield;
+        -moz-appearance: textfield;
     }
-
-    /*Mobile delete button*/
-
     .delete-button{
         top: 2px;
         right: 2px;
@@ -191,7 +191,8 @@ body {
 </head>
 <body>
 
-<div class="costing-container">  <h1 class ="logo" contenteditable="true">Vanilla Cake Costing</h1>
+<div class="costing-container">
+  <h1 class ="logo" contenteditable="true">Vanilla Cake Costing</h1>
 
   <table class="summary-table">
     <tr>
