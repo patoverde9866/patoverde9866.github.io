@@ -1,0 +1,270 @@
+/* styles.css */
+/* --- Existing styles --- */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+.container {
+  width: 80%;
+  max-width: 400px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 2.5em;
+  color: #1e406e;
+  margin: 0;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 15px 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  color: #333;
+  font-size: 1em;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.menu-item:hover {
+  background-color: #e0e0e0;
+}
+
+.add-recipe {
+  background-color: #f2f2f2;
+}
+
+.costing-container {
+  width: 95%;
+  margin: 10px auto;
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+
+/* Common styles for both ingredients and summary tables (Keep, but we will modify some) */
+.ingredients-table, .summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+/*  we will modify these ones*/
+.ingredients-table th, .summary-table th,
+.ingredients-table td, .summary-table td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.ingredients-table th, .summary-table th {
+  background-color: #f2f2f2;
+}
+
+.summary-table th {
+  font-weight: bold;
+}
+/* --- Ingredient Item (Row) Styles --- Keep*/
+.ingredient-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  position: relative;
+  z-index: 10;
+}
+
+.ingredient-item td {
+  border: none;
+}
+
+.delete-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 3px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.delete-button:hover {
+  background-color: #d82c20;
+}
+
+#addIngredientBtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#addIngredientBtn:hover {
+  background-color: #3e8e41;
+}
+/*Mobile styles, keep this*/
+@media (max-width: 768px) {
+  .costing-container {
+      width: 98%;
+  }
+ .summary-table {
+      float: none;
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 1.5rem;
+  }
+
+  th, td {
+      display: block;
+      width: 95%;
+  }
+
+ th {
+      text-align: center;
+  }
+
+  .ingredients-table thead {
+      display: none;
+  }
+
+  .ingredients-table td {
+      border: none;
+      position: relative;
+      padding-left: 45%;
+      padding-top: 6px;
+      padding-bottom: 6px;
+  }
+
+  .ingredients-table td::before {
+      position: absolute;
+      top: 50%;
+      left: 4px;
+      width: 40%;
+      padding-right: 10px;
+      white-space: nowrap;
+      content: attr(data-label);
+      font-weight: bold;
+    transform: translateY(-50%);
+      color: #555;
+      pointer-events: none;
+  }
+
+  .ingredient-item input[type="number"],
+  .ingredient-item input[type="text"] {
+      padding: 8px 12px;
+      font-size: 16px;
+      min-width: 80px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+    input[type=number] {
+         appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    .delete-button{
+        top: 2px;
+        right: 2px;
+        font-size: 1.2rem;
+        padding: 0.2rem 0.4rem;
+    }
+}
+
+/* --- New Styles and overrides --- */
+
+.top-nav {
+  background-color: #1e406e; /* Dark blue background */
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space out elements */
+  border-radius: 8px 8px 0 0; /* Rounded corners only at the top */
+}
+
+.menu-button, .add-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5em;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+
+.summary-table th {
+  display: block;
+  text-align: left; /* Changed to left */
+  padding: 5px;
+  padding-left: 8px; /* Add a small left padding*/
+}
+.summary-table td{
+display:block; /* Stack header on top*/
+padding: 5px;
+}
+
+/* Style for the title input */
+.summary-table .title-input {
+  width: calc(100% - 12px); /* Full width minus padding */
+  padding: 8px;
+  font-size: 1.2em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Style for the other input*/
+.summary-table input[type="number"]{
+  width: calc(100% - 12px); /* Full width minus padding */
+  padding: 6px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+/*remove borders*/
+.summary-table, .summary-table tr, .summary-table td, .summary-table th{
+border: none;
+}

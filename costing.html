@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>New Recipe Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="costing-container">
+    <div class="top-nav">
+        <button class="menu-button">&#9776;</button> <span>New Recipe</span>
+        <button class="add-button">+</button>
+    </div>
+
+    <table class="summary-table">
+      <tr>
+        <th>Title</th>
+        <td contenteditable="true" class="title-input"></td>
+      </tr>
+      <tr>
+        <th>Cost of Ingredients</th>
+          <td id="costOfing">$0.00</td>
+      </tr>
+      <tr>
+          <th>Net Sales Price</th>
+          <td><input type="number" id="netSalesPrice" value="7.50" onchange="calculateSummary()"></td>
+      </tr>
+      <tr>
+          <th>Net Profit Margin</th>
+          <td id="netProfitMargin">0.00%</td>
+      </tr>
+      <tr>
+          <th>Profit Per Sale</th>
+          <td id="profitPerSale">$0.00</td>
+      </tr>
+  </table>
+
+    <button id="addIngredientBtn">Add Ingredient</button>
+
+    <table class="ingredients-table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Qu</th>
+                <th>UOM</th>
+                <th>Package Size</th>
+                <th>Package Cost</th>
+                <th>Item Cost</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script>
+  // --- JavaScript --- (No changes needed here)
+  // Get the "Add Ingredient" button
+  const addIngredientBtn = document.getElementById('addIngredientBtn');
+  // Get the table body where ingredients will be added
+  const ingredientsTableBody = document.querySelector('.ingredients-table tbody');
+
+  // Add a click event listener to the "Add Ingredient" button
+  addIngredientBtn.addEventListener('click', addIngredientRow);
+
+
+  // Function to add a new ingredient row to the table
+  function addIngredientRow() {
+    const newRow = document.createElement('tr'); // Create a new table row
+    newRow.classList.add('ingredient-item');  // Add class for styling
+    newRow.innerHTML = `
+        <td data-label="Item"><input type="text" class="item"></td>
+        <td data-label="Qu"><input type="number" class="quantity" value="0"></td>
+        <td data-label="UOM"><input type="text" class="uom" value=""></td>
+        <td data-label="Package Size"><input type="number" class="packageSize" value="0"></td>
+        <td data-label="Package Cost"><input type="number" class="packageCost" value="0"></td>
+        <td data-label="Item Cost" class="itemCost">$0.00</td>
+        <td><button class="delete-button">X</button></td>
+    `; // Add the HTML for the new row
+    ingredientsTableBody.appendChild(newRow); // Append the new row to the table body
+
+      // Add event listeners to the new row's inputs for automatic calculation
+    const quantityInputs = newRow.querySelectorAll('.quantity, .packageCost, .packageSize, .uom');
+    quantityInputs.forEach(input => {
+      input.addEventListener('input', () => {
+        calculateItemCosts(); // Recalculate costs whenever input changes
+      });
+    });
+
+    // Add event listener for the delete button
+    newRow.querySelector('.delete-button').addEventListener('click', function() {
+      newRow.remove();  // Remove the row
+      calculateItemCosts(); // Recalculate after removing
+    });
+      //Update UOM label
+    newRow.querySelector('.uom').addEventListener('input', function(){
+      updateQuantityLabel(newRow);
+    });
+
+    calculateItemCosts();  // Initial calculation for the new row
+  }
+
+    //Function that updates the label of the Quantity column in the ingredient table.
+  function updateQuantityLabel(row){
+    const quantityInput = row.querySelector('.quantity');
+    const uomInput = row.querySelector('.uom');
+
+    // Set the data-label attribute based on UOM
+    quantityInput.parentElement.dataset.label = `Qu (${uomInput.value})`;
+
+  }
+
+    // Function to calculate the cost of each ingredient and the total cost
+  function calculateItemCosts() {
+    const rows = document.querySelectorAll('.ingredients-table tbody tr'); // Get all ingredient rows
+    let totalCost = 0; // Initialize total cost
+
+    rows.forEach(row => {
+      // Get values from input fields, converting them to numbers
+      const quantity = parseFloat(row.querySelector('.quantity').value);
+      const packageSize = parseFloat(row.querySelector('.packageSize').value);
+      const packageCost = parseFloat(row.querySelector('.packageCost').value);
+        const itemInput = row.querySelector('.item');
+        const uomInput = row.querySelector('.uom');
+
+        // Perform the calculation if inputs are valid numbers and package size isn't zero
+      if (!isNaN(quantity) && !isNaN(packageSize) && !isNaN(packageCost) && packageSize !== 0) {
+        const itemCost = (quantity / packageSize) * packageCost;
+        row.querySelector('.itemCost').textContent = `$${itemCost.toFixed(2)}`; // Update item cost display, formatted to two decimal places
+        totalCost += itemCost; // Add to the total cost
+      }
+      else{
+        row.querySelector('.itemCost').textContent = '$0.00'; // Display default value.
+      }
+    });
+
+    document.getElementById('costOfing').textContent = `$${totalCost.toFixed(2)}`; // Update total cost of sale, formatted to two decimal places
+    calculateSummary(); // Recalculate summary after item costs
+  }
+
+
+    // Function to calculate the summary values (profit margin, profit per sale)
+  function calculateSummary() {
+    const costOfing = parseFloat(document.getElementById('costOfing').textContent.substring(1)); // Get cost of sale, removing the '$'
+    const netSalesPrice = parseFloat(document.getElementById('netSalesPrice').value); // Get net sales price
+
+    if (!isNaN(costOfing) && !isNaN(netSalesPrice)) {
+      //Net cost margin removed, calculate net profit margin and profit per sale
+      const netProfitMargin = ((netSalesPrice - costOfing) / netSalesPrice) * 100;
+      const profitPerSale = netSalesPrice - costOfing;
+
+      document.getElementById('netProfitMargin').textContent = `${netProfitMargin.toFixed(2)}%`; // Update net profit margin, formatted to two decimal places
+      document.getElementById('profitPerSale').textContent = `$${profitPerSale.toFixed(2)}`; // Update profit per sale, formatted to two decimal places
+    } else {
+      document.getElementById('netProfitMargin').textContent = '0.00%';  // Reset if invalid input
+      document.getElementById('profitPerSale').textContent = '$0.00'; // Reset if invalid input
+    }
+  }
+  calculateItemCosts(); //initial calculation
+</script>
+
+</body>
+</html>
