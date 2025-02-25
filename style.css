@@ -81,11 +81,6 @@ header {
   text-align: left;
   white-space: nowrap;
 }
-
-.ingredients-table th, .summary-table th {
-  background-color: #f2f2f2;
-}
-
 .summary-table th {
   font-weight: bold;
 }
@@ -105,20 +100,18 @@ header {
 }
 
 .delete-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 3px 6px;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 12px;
+  background-color: #ff4d4d; /* Red background */
+  color: white; /* White text */
+  border: none; /* No border */
+  padding: 5px 10px; /* Padding */
+  cursor: pointer; /* Pointer cursor on hover */
+  border-radius: 3px; /* Rounded corners */
+  font-size: 14px; /* Font size */
+  margin: 0; /* No margin */
 }
 
 .delete-button:hover {
-  background-color: #d82c20;
+  background-color: #cc0000; /* Darker red on hover */
 }
 
 #addIngredientBtn {
@@ -212,6 +205,14 @@ header {
     }
 }
 
+/* Media query for mobile devices */
+@media (max-width: 600px) {
+  .delete-button {
+    padding: 3px 6px; /* Smaller padding */
+    font-size: 12px; /* Smaller font size */
+  }
+}
+
 /* --- New Styles and overrides --- */
 
 .top-nav {
@@ -256,7 +257,8 @@ padding: 5px;
 }
 
 /* Style for the other input*/
-.summary-table input[type="number"]{
+.summary-table input[type="number"],
+.summary-table input[type="text"] {
   width: calc(100% - 12px); /* Full width minus padding */
   padding: 6px;
   font-size: 1em;
@@ -267,4 +269,12 @@ padding: 5px;
 /*remove borders*/
 .summary-table, .summary-table tr, .summary-table td, .summary-table th{
 border: none;
+}
+.summary-table input[type="text"]::placeholder {
+  color: #ccc; /* Light grey color for placeholder text */
+  opacity: 1; /* Ensure the placeholder text is fully opaque */
+}
+.summary-table input[type="number"]::placeholder {
+  color: #ccc;
+  opacity: 1;
 }
