@@ -15,16 +15,21 @@
     <table class="summary-table">
       <tr>
         <th>Title</th>
-        <td contenteditable="true" class="title-input"></td>
+        <td><input type="text" placeholder="Enter recipe title"></td>
+      </tr>
+      <tr>
+        <th>Servings</th>
+        <td><input type="text" placeholder="Quantity"></td>
+      </tr>
+      <tr>
+        <th>Net Sales Price</th>
+        <td><input type="number" placeholder="Price" id="netSalesPrice" onchange="calculateSummary()"></td>
       </tr>
       <tr>
         <th>Cost of Ingredients</th>
           <td id="costOfing">$0.00</td>
       </tr>
-      <tr>
-          <th>Net Sales Price</th>
-          <td><input type="number" id="netSalesPrice" value="7.50" onchange="calculateSummary()"></td>
-      </tr>
+      
       <tr>
           <th>Net Profit Margin</th>
           <td id="netProfitMargin">0.00%</td>
@@ -76,7 +81,7 @@
         <td data-label="Package Size"><input type="number" class="packageSize" value="0"></td>
         <td data-label="Package Cost"><input type="number" class="packageCost" value="0"></td>
         <td data-label="Item Cost" class="itemCost">$0.00</td>
-        <td><button class="delete-button">X</button></td>
+        <td><button class="delete-button">Delete</button></td>
     `; // Add the HTML for the new row
     ingredientsTableBody.appendChild(newRow); // Append the new row to the table body
 
