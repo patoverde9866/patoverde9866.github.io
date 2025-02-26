@@ -8,7 +8,7 @@ body {
 }
 
 .container {
-  width: 80%;
+  width: 100%;
   max-width: 400px;
   background-color: #fff;
   border-radius: 10px;
@@ -64,7 +64,6 @@ header {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow-x: auto;
 }
-
 
 /* Common styles for both ingredients and summary tables (Keep, but we will modify some) */
 .ingredients-table, .summary-table {
@@ -130,91 +129,83 @@ header {
 #addIngredientBtn:hover {
   background-color: #3e8e41;
 }
-/*Mobile styles, keep this*/
-@media (max-width: 768px) {
+
+/* Mobile styles */
+@media (max-width: 600px) {
   .costing-container {
-      width: 98%;
+    width: 98%;
   }
- .summary-table {
-      float: none;
-      width: 100%;
-      margin-right: 0;
-      margin-bottom: 1.5rem;
+  .summary-table {
+    float: none;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 1.5rem;
   }
-
+  .ingredients-table {
+    float: none;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 1.5rem;
+  }
   th, td {
-      display: block;
-      width: 95%;
+    display: block;
+    width: 95%;
   }
-
- th {
-      text-align: center;
+  th {
+    text-align: center;
   }
-
   .ingredients-table thead {
-      display: none;
+    display: none;
   }
-
   .ingredients-table td {
-      border: none;
-      position: relative;
-      padding-left: 45%;
-      padding-top: 6px;
-      padding-bottom: 6px;
+    border: none;
+    position: relative;
+    padding-left: 45%;
+    padding-top: 6px;
+    padding-bottom: 6px;
   }
-
   .ingredients-table td::before {
-      position: absolute;
-      top: 50%;
-      left: 4px;
-      width: 40%;
-      padding-right: 10px;
-      white-space: nowrap;
-      content: attr(data-label);
-      font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    width: 40%;
+    padding-right: 10px;
+    white-space: nowrap;
+    content: attr(data-label);
+    font-weight: bold;
     transform: translateY(-50%);
-      color: #555;
-      pointer-events: none;
+    color: #555;
+    pointer-events: none;
   }
-
   .ingredient-item input[type="number"],
   .ingredient-item input[type="text"] {
-      padding: 8px 12px;
-      font-size: 16px;
-      min-width: 80px;
-      margin-bottom: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 16px;
+    min-width: 80px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
   }
-
   input[type=number]::-webkit-inner-spin-button,
   input[type=number]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
   }
-    input[type=number] {
-         appearance: textfield;
-      -moz-appearance: textfield;
-    }
-
-    .delete-button{
-        top: 2px;
-        right: 2px;
-        font-size: 1.2rem;
-        padding: 0.2rem 0.4rem;
-    }
-}
-
-/* Media query for mobile devices */
-@media (max-width: 600px) {
-  .delete-button {
-    padding: 3px 6px; /* Smaller padding */
-    font-size: 12px; /* Smaller font size */
+  input[type=number] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+  .uom {
+    width: 50%;
+    padding: 6px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
   }
 }
 
 /* --- New Styles and overrides --- */
-
 .top-nav {
   background-color: #1e406e; /* Dark blue background */
   color: white;
@@ -234,16 +225,15 @@ header {
   padding: 0 10px;
 }
 
-
 .summary-table th {
   display: block;
   text-align: left; /* Changed to left */
   padding: 5px;
-  padding-left: 8px; /* Add a small left padding*/
+  padding-left: 8px; /* Add a small left padding */
 }
-.summary-table td{
-display:block; /* Stack header on top*/
-padding: 5px;
+.summary-table td {
+  display: block; /* Stack header on top */
+  padding: 5px;
 }
 
 /* Style for the title input */
@@ -256,7 +246,7 @@ padding: 5px;
   box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
-/* Style for the other input*/
+/* Style for the other input */
 .summary-table input[type="number"],
 .summary-table input[type="text"] {
   width: calc(100% - 12px); /* Full width minus padding */
@@ -266,9 +256,10 @@ padding: 5px;
   border-radius: 4px;
   box-sizing: border-box;
 }
-/*remove borders*/
-.summary-table, .summary-table tr, .summary-table td, .summary-table th{
-border: none;
+
+/* Remove borders */
+.summary-table, .summary-table tr, .summary-table td, .summary-table th {
+  border: none;
 }
 .summary-table input[type="text"]::placeholder {
   color: #ccc; /* Light grey color for placeholder text */
@@ -277,4 +268,16 @@ border: none;
 .summary-table input[type="number"]::placeholder {
   color: #ccc;
   opacity: 1;
+}
+.delete-button {
+  background-color: #1e406e;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
