@@ -266,3 +266,8 @@ header {
   color: #ccc;
   opacity: 1;
 }
+@media (max-width: 600px) {
+  body {
+      font-size: 18px; /* Or whatever size is appropriate */
+  }
+}
