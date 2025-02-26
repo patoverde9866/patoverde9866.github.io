@@ -99,20 +99,17 @@ header {
 }
 
 .delete-button {
-  background-color: #ff4d4d; /* Red background */
-  color: white; /* White text */
-  border: none; /* No border */
-  padding: 5px 10px; /* Padding */
-  cursor: pointer; /* Pointer cursor on hover */
-  border-radius: 3px; /* Rounded corners */
-  font-size: 14px; /* Font size */
-  margin: 0; /* No margin */
+  background-color: #1e406e;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
-
-.delete-button:hover {
-  background-color: #cc0000; /* Darker red on hover */
-}
-
 #addIngredientBtn {
   background-color: #4CAF50;
   color: white;
@@ -268,16 +265,4 @@ header {
 .summary-table input[type="number"]::placeholder {
   color: #ccc;
   opacity: 1;
-}
-.delete-button {
-  background-color: #1e406e;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 10px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
 }
