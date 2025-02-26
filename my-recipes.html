@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Recipes</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>My Recipes</h1>
+        <div id="recipe-list">
+            </div>
+        <button id="backButton">Back to Main Menu</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCtUdCTd2weimwMFRVwDHvD_fiXsoETFWQ", //REPLACE WITH YOUR CONFIG
+            authDomain: "recipecosting1.firebaseapp.com",
+            projectId: "recipecosting1",
+            storageBucket: "recipecosting1.firebasestorage.app",
+            messagingSenderId: "31287514954",
+            appId: "1:31287514954:web:3b896f7d367541663793b3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const recipeListDiv = document.getElementById('recipe-list');
+        const backButton = document.getElementById('backButton');
+
+
+        async function fetchRecipes() {
+            try {
+                const recipesCollection = collection(db, 'recipes');
+                const querySnapshot = await getDocs(recipesCollection);
+
+                querySnapshot.forEach((doc) => {
+                    const recipeData = doc.data();
+                    displayRecipe(recipeData);
+                });
+
+            } catch (error) {
+                console.error("Error fetching recipes:", error);
+                recipeListDiv.innerHTML = "<p>Error loading recipes.</p>";
+            }
+        }
+
+        function displayRecipe(recipeData) {
+            const recipeDiv = document.createElement('div');
+            recipeDiv.classList.add('recipe-item');
+
+            const titleElement = document.createElement('h2');
+            titleElement.textContent = recipeData.title;
+            recipeDiv.appendChild(titleElement);
+
+            const servingsElement = document.createElement('p');
+            servingsElement.textContent = `Servings: ${recipeData.servings}`;
+            recipeDiv.appendChild(servingsElement);
+
+            const priceElement = document.createElement('p');
+            priceElement.textContent = `Net Sales Price: $${recipeData.netSalesPrice.toFixed(2)}`;
+            recipeDiv.appendChild(priceElement);
+
+            const ingredientsList = document.createElement('ul');
+             ingredientsList.innerHTML = `<strong>Ingredients List:</strong>`;
+            recipeData.ingredients.forEach(ingredient => {
+                const ingredientItem = document.createElement('li');
+                ingredientItem.textContent = `${ingredient.item}: ${ingredient.quantity} ${ingredient.uom} (Package: ${ingredient.packageSize} ${ingredient.uom} @ $${ingredient.packageCost.toFixed(2)})`;
+                ingredientsList.appendChild(ingredientItem);
+            });
+            recipeDiv.appendChild(ingredientsList);
+            recipeListDiv.appendChild(recipeDiv);
+        }
+
+        fetchRecipes();
+        backButton.addEventListener('click', ()=>{
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
