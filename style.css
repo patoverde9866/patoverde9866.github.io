@@ -1,41 +1,47 @@
 /* styles.css */
-/* --- Existing styles --- */
+
+/* Reset and Basic Styles - Targeting Mobile */
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f0f0f0;
+  font-size: 16px; /* Base font size for mobile */
+  -webkit-text-size-adjust: 100%; /* Prevent iOS from resizing text */
 }
 
+/* Container for the main page */
 .container {
   width: 100%;
-  max-width: 400px;
+  max-width: 100%; /* Full width on mobile */
   background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  /* Removed border-radius to take full width*/
+  box-shadow: none; /* Remove shadow for a flatter mobile design */
+  padding: 10px;  /* Reduced padding for smaller screens */
   margin: 0 auto;
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px; /* Reduced margin */
 }
 
 .logo {
   font-family: 'Pacifico', cursive;
-  font-size: 2.5em;
+  font-size: 2em; /* Slightly reduced font size */
   color: #1e406e;
   margin: 0;
 }
 
+/* Button styling for main menu */
 .menu-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 15px 10px;
-  margin-bottom: 10px;
+  padding: 12px 10px; /* Adjusted padding */
+  margin-bottom: 8px; /* Reduced margin */
   border: none;
   border-radius: 5px;
   background-color: #f8f8f8;
@@ -47,7 +53,7 @@ header {
   box-sizing: border-box;
 }
 
-.menu-item:hover {
+.menu-item:active { /* Use :active for mobile tap effect */
   background-color: #e0e0e0;
 }
 
@@ -55,162 +61,31 @@ header {
   background-color: #f2f2f2;
 }
 
+
+/* Costing Container - Mobile First */
 .costing-container {
-  width: 95%;
   margin: 10px auto;
   background-color: white;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
+  box-sizing: border-box; /* Include padding and border in element's total width */
+  width: 100%; /* Ensure it takes full width */
+  overflow-x: hidden; /* Hide horizontal scrollbar, content will wrap */
+
 }
 
-/* Common styles for both ingredients and summary tables (Keep, but we will modify some) */
-.ingredients-table, .summary-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 10px;
-}
 
-/*  we will modify these ones*/
-.ingredients-table th, .summary-table th,
-.ingredients-table td, .summary-table td {
-  border: 1px solid #ddd;
-  padding: 6px;
-  text-align: left;
-  white-space: nowrap;
-}
-.summary-table th {
-  font-weight: bold;
-}
-/* --- Ingredient Item (Row) Styles --- Keep*/
-.ingredient-item {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #f9f9f9;
-  border-radius: 4px;
-  position: relative;
-  z-index: 10;
-}
-
-.ingredient-item td {
-  border: none;
-}
-
-.delete-button {
-  background-color: #1e406e;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 10px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-#addIngredientBtn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 10px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#addIngredientBtn:hover {
-  background-color: #3e8e41;
-}
-
-/* Mobile styles */
-@media (max-width: 600px) {
-  .costing-container {
-    width: 98%;
-  }
-  .summary-table {
-    float: none;
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 1.5rem;
-  }
-  .ingredients-table {
-    float: none;
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 1.5rem;
-  }
-  th, td {
-    display: block;
-    width: 95%;
-  }
-  th {
-    text-align: center;
-  }
-  .ingredients-table thead {
-    display: none;
-  }
-  .ingredients-table td {
-    border: none;
-    position: relative;
-    padding-left: 45%;
-    padding-top: 6px;
-    padding-bottom: 6px;
-  }
-  .ingredients-table td::before {
-    position: absolute;
-    top: 50%;
-    left: 4px;
-    width: 40%;
-    padding-right: 10px;
-    white-space: nowrap;
-    content: attr(data-label);
-    font-weight: bold;
-    transform: translateY(-50%);
-    color: #555;
-    pointer-events: none;
-  }
-  .ingredient-item input[type="number"],
-  .ingredient-item input[type="text"] {
-    padding: 8px 12px;
-    font-size: 16px;
-    min-width: 80px;
-    margin-bottom: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  input[type=number] {
-    appearance: textfield;
-    -moz-appearance: textfield;
-  }
-  .uom {
-    width: 50%;
-    padding: 6px;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-}
-
-/* --- New Styles and overrides --- */
+/* Top Navigation - Mobile Specific */
 .top-nav {
-  background-color: #1e406e; /* Dark blue background */
+  background-color: #1e406e;
   color: white;
   padding: 10px;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Space out elements */
-  border-radius: 8px 8px 0 0; /* Rounded corners only at the top */
+  justify-content: space-between;
+  border-radius: 8px 8px 0 0; /* Rounded top corners */
+  width: calc(100% - 20px); /*consistent with the padding of costing-container*/
 }
 
 .menu-button, .add-button {
@@ -220,54 +95,232 @@ header {
   font-size: 1.5em;
   cursor: pointer;
   padding: 0 10px;
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+}
+
+
+/* --- Summary Table - Mobile First --- */
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+/* Remove borders for a cleaner mobile look */
+.summary-table, .summary-table tr, .summary-table td, .summary-table th {
+  border: none;
 }
 
 .summary-table th {
-  display: block;
-  text-align: left; /* Changed to left */
+  display: block;  /* Stack headers */
+  text-align: left;
   padding: 5px;
-  padding-left: 8px; /* Add a small left padding */
+  padding-left: 8px;
+  font-weight: bold;
 }
+
 .summary-table td {
-  display: block; /* Stack header on top */
+  display: block; /* Stack data cells */
   padding: 5px;
 }
 
-/* Style for the title input */
-.summary-table .title-input {
-  width: calc(100% - 12px); /* Full width minus padding */
-  padding: 8px;
-  font-size: 1.2em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box; /* Include padding and border in element's total width and height */
-}
-
-/* Style for the other input */
+/* Inputs in Summary Table */
 .summary-table input[type="number"],
 .summary-table input[type="text"] {
-  width: calc(100% - 12px); /* Full width minus padding */
-  padding: 6px;
+  width: calc(100% - 16px); /* Full width, accounting for padding */
+  padding: 8px;
   font-size: 1em;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  margin-bottom: 5px; /* Space between stacked inputs */
+}
+.summary-table .title-input {
+  width: calc(100% - 16px);
+  padding: 10px;  /* Increased padding for better touch target */
+  font-size: 1.1em; /* Slightly larger font */
 }
 
-/* Remove borders */
-.summary-table, .summary-table tr, .summary-table td, .summary-table th {
-  border: none;
-}
-.summary-table input[type="text"]::placeholder {
-  color: #ccc; /* Light grey color for placeholder text */
-  opacity: 1; /* Ensure the placeholder text is fully opaque */
-}
+.summary-table input[type="text"]::placeholder,
 .summary-table input[type="number"]::placeholder {
   color: #ccc;
   opacity: 1;
 }
-@media (max-width: 600px) {
+
+/* --- Ingredients Table - Mobile First --- */
+.ingredients-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+/* Hide the thead in mobile view */
+.ingredients-table thead {
+  display: none;
+}
+
+.ingredients-table td {
+  border: none;
+  display: block; /* Display table cells as blocks */
+  position: relative;
+  padding-left: 45%;  /* Space for pseudo-element label */
+  padding-top: 6px;
+  padding-bottom: 6px;
+  text-align: left; /* Align text to the left */
+
+}
+
+.ingredients-table td::before {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  width: 40%;
+  padding-right: 10px;
+  white-space: nowrap;
+  content: attr(data-label); /* Show data-label as content */
+  font-weight: bold;
+  transform: translateY(-50%);
+  color: #555;
+  pointer-events: none;
+}
+
+/* Style for ingredient inputs */
+.ingredient-item input[type="number"],
+.ingredient-item input[type="text"],
+.ingredient-item .uom
+{
+  padding: 8px;
+  font-size: 1em;
+  min-width: 80px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%; /* Take full width available */
+}
+
+
+/* Hide spin buttons on number inputs */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.uom {
+   width: 100%; /* Full width */
+
+}
+
+/* --- Ingredient Item (Row) Styles --- */
+/* These styles apply to each row of the ingredients table. */
+.ingredient-item {
+/*  border: 1px solid #ddd;  Remove to avoid double borders */
+  padding: 10px 0; /* Adjust padding for a cleaner look. Top and Bottom Padding*/
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+/*   position: relative; Removed to avoid stacking issues*/
+ /* z-index: 10; Removed for mobile, z-index is less relevant */
+}
+
+
+/* --- Button Styles --- */
+
+/* Add Ingredient Button */
+#addIngredientBtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: block;
+  width: auto;  /* Let button width be determined by content */
+  margin-left: auto;
+  margin-right: auto;
+   -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+
+}
+
+#addIngredientBtn:active { /* Mobile tap effect */
+  background-color: #3e8e41;
+}
+/* Delete Ingredient Button */
+.delete-button {
+  background-color: #1e406e;
+  color: white;
+  padding: 8px 12px; /* Smaller padding for smaller button */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+ /* margin-bottom: 10px;  Not needed, handled by row padding */
+  display: block;
+  margin-left: auto; /* Center horizontally */
+  margin-right: auto;
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+
+}
+.delete-button:active{
+  background-color: #13284a;
+}
+
+/* Save Recipe Button */
+#saveRecipeButton {
+  background-color: #1e406e;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 15px; /* Space above the button */
+  display: block;
+  width: 100%; /* Full width */
+  box-sizing: border-box; /* Include padding in width */
+   -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+
+}
+#saveRecipeButton:active{
+  background-color: #13284a;
+}
+
+/* Ensure no horizontal scrollbar appears on very small screens */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Specific viewport sizes - iPhone SE to 14 Pro Max */
+/* iPhone SE */
+@media only screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) {
   body {
-      font-size: 18px; /* Or whatever size is appropriate */
+      font-size: 15px; /* Slightly smaller base font size */
   }
+}
+
+/* iPhone XR, 11, 12, 13, 14 */
+@media only screen and (min-device-width: 375px) and (max-device-width: 414px) and (-webkit-min-device-pixel-ratio: 2) {
+   /* Default mobile styles will generally apply */
+}
+
+/* iPhone 12 Pro, 13 Pro, 14 Pro */
+@media only screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) {
+  /* Default mobile styles will generally apply */
+}
+
+/* iPhone 14 Pro Max, 13 Pro Max, 12 Pro Max */
+@media only screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) {
+  /* Default mobile styles will generally apply */
+ /* body {
+      font-size: 17px;  Slightly larger for these larger screens
+  }*/
+}
+
+/* iPhone 14 Plus */
+@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) {
+/* Default mobile styles will generally apply */
 }
