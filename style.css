@@ -121,22 +121,33 @@ header {
 
 .summary-table td {
   display: block; /* Stack data cells */
-  padding: 5px;
+  padding: 5px;  /* Consistent padding */
 }
 
 /* Inputs in Summary Table */
 .summary-table input[type="number"],
-.summary-table input[type="text"] {
-  width: calc(100% - 16px); /* Full width, accounting for padding */
+.summary-table input[type="text"],
+.input-container input[type="number"] { /* Add the .input-container input */
+  width: 100%;  /*  Full width of the TD, now */
   padding: 8px;
   font-size: 1em;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  margin-bottom: 5px; /* Space between stacked inputs */
+  margin-bottom: 5px;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
+
+/* Adjust padding-right on the input *inside* the container: */
+.input-container input[type="number"] {
+  padding-right: 25px; /* Slightly reduced, experiment with this */
+}
+
+
 .summary-table .title-input {
-  width: calc(100% - 16px);
+  width: 100%; /*Also full width*/
   padding: 10px;  /* Increased padding for better touch target */
   font-size: 1.1em; /* Slightly larger font */
 }
@@ -146,7 +157,6 @@ header {
   color: #ccc;
   opacity: 1;
 }
-
 /* --- Ingredients Table - Mobile First --- */
 .ingredients-table {
   width: 100%;
@@ -211,20 +221,18 @@ input[type=number] {
 }
 
 .uom {
-   width: 100%; /* Full width */
+  width: 100%; /* Full width */
 
 }
 
 /* --- Ingredient Item (Row) Styles --- */
 /* These styles apply to each row of the ingredients table. */
 .ingredient-item {
-/*  border: 1px solid #ddd;  Remove to avoid double borders */
-  padding: 10px 0; /* Adjust padding for a cleaner look. Top and Bottom Padding*/
-  margin-bottom: 10px;
+  padding: 10px 0;
+  margin-bottom: 10px; /*  Keep some margin for spacing */
   background-color: #f9f9f9;
   border-radius: 4px;
-/*   position: relative; Removed to avoid stacking issues*/
- /* z-index: 10; Removed for mobile, z-index is less relevant */
+  border-bottom: 1px solid #ddd; /* Add this line */
 }
 
 
@@ -243,7 +251,7 @@ input[type=number] {
   width: auto;  /* Let button width be determined by content */
   margin-left: auto;
   margin-right: auto;
-   -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
 
 }
 
@@ -258,7 +266,7 @@ input[type=number] {
   border: none;
   border-radius: 4px;
   cursor: pointer;
- /* margin-bottom: 10px;  Not needed, handled by row padding */
+  /* margin-bottom: 10px;  Not needed, handled by row padding */
   display: block;
   margin-left: auto; /* Center horizontally */
   margin-right: auto;
@@ -281,7 +289,7 @@ input[type=number] {
   display: block;
   width: 100%; /* Full width */
   box-sizing: border-box; /* Include padding in width */
-   -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
 
 }
 #saveRecipeButton:active{
@@ -294,6 +302,26 @@ html, body {
   max-width: 100%;
 }
 
+/* --- Input Container for % --- */
+
+.input-container {
+  position: relative;
+  display: block; /*  <-- Change to block */
+  width: 25%;   /*  25% of the TD */
+  box-sizing: border-box;  /* Keep this */
+}
+
+.input-container .percent-symbol {
+position: absolute;   /*  Take it out of the normal flow */
+top: 50%;          /*  Center vertically */
+right: 10px;        /*  Position from the right edge */
+transform: translateY(-60%); /*  Perfect vertical centering */
+color: #999;      /*  Slightly muted color (optional) */
+pointer-events: none;  /*  Crucial: Makes the % sign non-interactive */
+font-size: 1.2em;      /*Match the input's font-size*/
+}
+
+
 /* Specific viewport sizes - iPhone SE to 14 Pro Max */
 /* iPhone SE */
 @media only screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) {
@@ -304,7 +332,7 @@ html, body {
 
 /* iPhone XR, 11, 12, 13, 14 */
 @media only screen and (min-device-width: 375px) and (max-device-width: 414px) and (-webkit-min-device-pixel-ratio: 2) {
-   /* Default mobile styles will generally apply */
+  /* Default mobile styles will generally apply */
 }
 
 /* iPhone 12 Pro, 13 Pro, 14 Pro */
@@ -315,7 +343,7 @@ html, body {
 /* iPhone 14 Pro Max, 13 Pro Max, 12 Pro Max */
 @media only screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) {
   /* Default mobile styles will generally apply */
- /* body {
+/* body {
       font-size: 17px;  Slightly larger for these larger screens
   }*/
 }
