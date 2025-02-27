@@ -16,17 +16,22 @@
         <table class="summary-table">
             <tr>
                 <th>Title</th>
-                <td><input type="text" placeholder="Enter recipe title"></td>
+                <td><input type="text" placeholder="Enter recipe title" class="title-input"></td>
             </tr>
             <tr>
                 <th>Servings</th>
                 <td><input type="text" placeholder="Quantity" id="servings"></td>
             </tr>
             <tr>
-                <th>Net Sales Price</th>
-                <td><input type="number" placeholder="Price" id="netSalesPrice"></td>
+                <th>Other Costs</th>
+                <td>
+                    <div class="input-container">
+                        <input type="number" id="other-costs" placeholder="30" min="0" max="100" step="0.01">
+                        <span class="percent-symbol">%</span>
+                    </div>
+                </td>
             </tr>
-        </table>    
+        </table>
 
         <table class="ingredients-table">
             <thead>
@@ -45,7 +50,7 @@
         </table>
         <button id="addIngredientBtn">Add Ingredient</button>
 
-        <table class="summary-table">    
+        <table class="summary-table">
             <tr>
                 <th>Cost of Ingredients</th>
                 <td id="costOfing">$0.00</td>
@@ -55,8 +60,12 @@
                 <td id="costPerUnit">$0.00</td>
             </tr>
             <tr>
-                <th>Net Profit Margin</th>
-                <td id="netProfitMargin">0.00%</td>
+                <th>Additional Costs</th>
+                <td id="additionalCosts">$0.00</td>
+            </tr>
+            <tr>
+                <th>Total Cost</th>
+                <td id="totalCost">0.00%</td>
             </tr>
             <tr>
                 <th>Profit Per Sale</th>
@@ -85,13 +94,45 @@
         const addIngredientBtn = document.getElementById('addIngredientBtn');
         const ingredientsTableBody = document.querySelector('.ingredients-table tbody');
         const servingsInput = document.getElementById('servings');
-        const netSalesPriceInput = document.getElementById('netSalesPrice');
         const saveRecipeButton = document.getElementById('saveRecipeButton');
+        const otherCostsInput = document.getElementById('other-costs'); // Get the other costs input
+
 
         servingsInput.addEventListener('input', calculateSummary);
-        netSalesPriceInput.addEventListener('input', calculateSummary);
+        //netSalesPriceInput.addEventListener('input', calculateSummary); // netSalesPriceInput is not defined
         addIngredientBtn.addEventListener('click', addIngredientRow);
         saveRecipeButton.addEventListener('click', saveRecipe);
+        otherCostsInput.addEventListener('input', calculateSummary); // Add this line!
+
+         // Other Costs Input Validation (Percentage)
+        otherCostsInput.addEventListener('input', function() {
+          // Remove any non-numeric characters (except the decimal point)
+            let cleanedValue = this.value.replace(/[^0-9.]/g, '');
+
+            // Handle multiple decimal points (only allow one)
+            let decimalCount = cleanedValue.split('.').length - 1;
+            if (decimalCount > 1) {
+                // Remove the last decimal point
+                cleanedValue = cleanedValue.substring(0, cleanedValue.lastIndexOf("."));
+            }
+
+            let value = parseFloat(cleanedValue);
+
+          if (isNaN(value)) {
+            this.value = '';
+            return;
+          }
+
+          if (value < 0) {
+            this.value = 0;
+          } else if (value > 100) {
+            this.value = 100;
+          } else {
+              this.value = parseFloat(value.toFixed(2)); //keep up to 2 decimal places.
+          }
+        });
+
+
 
         function addIngredientRow() {
             const newRow = document.createElement('tr');
@@ -101,8 +142,8 @@
                 <td data-label="Qu"><input type="number" class="quantity" value="0"></td>
                 <td data-label="UOM">
                     <select class="uom">
-                        <option value="Kg">Kg</option>
                         <option value="gr">gr</option>
+                        <option value="Kg">Kg</option>                        
                         <option value="ml">ml</option>
                         <option value="L">L</option>
                         <option value="Units">Units</option>
@@ -160,11 +201,12 @@
             calculateSummary();
         }
 
-        function calculateSummary() {
+      function calculateSummary() {
             const costOfing = parseFloat(document.getElementById('costOfing').textContent.substring(1));
-            const netSalesPrice = parseFloat(document.getElementById('netSalesPrice').value);
             const servings = parseFloat(document.getElementById('servings').value);
+            const otherCostsPercent = parseFloat(document.getElementById('other-costs').value);
 
+            // Calculate Cost per Unit (as before)
             if (!isNaN(costOfing) && !isNaN(servings) && servings !== 0) {
                 const costPerUnit = costOfing / servings;
                 document.getElementById('costPerUnit').textContent = `$${costPerUnit.toFixed(2)}`;
@@ -172,22 +214,27 @@
                 document.getElementById('costPerUnit').textContent = '$0.00';
             }
 
-            if (!isNaN(costOfing) && !isNaN(netSalesPrice) && !isNaN(servings) && servings !== 0) {
-                const netProfitMargin = ((netSalesPrice - costOfing) / netSalesPrice) * 100;
-                const profitPerSale = netSalesPrice - costOfing;
-
-                document.getElementById('netProfitMargin').textContent = `${netProfitMargin.toFixed(2)}%`;
-                document.getElementById('profitPerSale').textContent = `$${profitPerSale.toFixed(2)}`;
+            // Calculate Additional Costs
+            let additionalCosts = 0;
+            if (!isNaN(costOfing) && !isNaN(otherCostsPercent)) {
+            const otherCostsDecimal = otherCostsPercent / 100; // Convert percentage to decimal
+            additionalCosts = costOfing * otherCostsDecimal;
+            document.getElementById('additionalCosts').textContent = `$${additionalCosts.toFixed(2)}`;
             } else {
-                document.getElementById('netProfitMargin').textContent = '0.00%';
-                document.getElementById('profitPerSale').textContent = '$0.00';
+            document.getElementById('additionalCosts').textContent = '$0.00';
+            }
+            // Calculate Total Cost
+            if (!isNaN(costOfing) && !isNaN(additionalCosts)) {
+                const totalCost = costOfing + additionalCosts;
+                document.getElementById('totalCost').textContent = `$${totalCost.toFixed(2)}`;
+            } else {
+                document.getElementById('totalCost').textContent = '$0.00';
             }
         }
 
         async function saveRecipe() {
             const title = document.querySelector('input[placeholder="Enter recipe title"]').value;
             const servings = parseFloat(document.getElementById('servings').value);
-            const netSalesPrice = parseFloat(document.getElementById('netSalesPrice').value);
 
             const ingredients = [];
             document.querySelectorAll('.ingredients-table tbody tr').forEach(row => {
@@ -204,7 +251,6 @@
                 await addDoc(recipesCollection, {
                     title,
                     servings,
-                    netSalesPrice,
                     ingredients
                 });
                 alert('Recipe saved successfully!');
