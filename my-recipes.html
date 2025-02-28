@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Recetas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>Mis Recetas</h1>
+        <div id="recipe-list"></div>
+        <button id="backButton">Volver al Menú Principal</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCtUdCTd2weimwMFRVwDHvD_fiXsoETFWQ", //REPLACE WITH YOUR CONFIG
+            authDomain: "recipecosting1.firebaseapp.com",
+            projectId: "recipecosting1",
+            storageBucket: "recipecosting1.firebasestorage.app",
+            messagingSenderId: "31287514954",
+            appId: "1:31287514954:web:3b896f7d367541663793b3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const recipeListDiv = document.getElementById('recipe-list');
+        const backButton = document.getElementById('backButton');
+
+        async function fetchRecipes() {
+            try {
+                const recipesCollection = collection(db, 'recipes');
+                const querySnapshot = await getDocs(recipesCollection);
+
+                querySnapshot.forEach((doc) => {
+                    const recipeData = doc.data();
+                    recipeData.id = doc.id; // Store the document ID
+                    displayRecipe(recipeData);
+                });
+
+            } catch (error) {
+                console.error("Error fetching recipes:", error);
+                recipeListDiv.innerHTML = "<p>Error al cargar las recetas.</p>";
+            }
+        }
+
+        function displayRecipe(recipeData) {
+            const recipeDiv = document.createElement('div');
+            recipeDiv.classList.add('recipe-item');
+
+            const titleElement = document.createElement('h2');
+            titleElement.textContent = recipeData.title;
+            recipeDiv.appendChild(titleElement);
+
+            const servingsElement = document.createElement('p');
+            servingsElement.textContent = `Porciones: ${recipeData.servings}`;
+            recipeDiv.appendChild(servingsElement);
+
+            if (recipeData.costOfing) {
+                const costOfingElement = document.createElement('p');
+                costOfingElement.textContent = `Costo de Ingredientes: $${recipeData.costOfing.toFixed(2)}`;
+                recipeDiv.appendChild(costOfingElement);
+            }
+
+            const ingredientsList = document.createElement('ul');
+            ingredientsList.innerHTML = `<strong>Lista de Ingredientes:</strong>`;
+            recipeData.ingredients.forEach(ingredient => {
+                const ingredientItem = document.createElement('li');
+                ingredientItem.textContent = `${ingredient.item}: ${ingredient.quantity} ${ingredient.uom} (Paquete: ${ingredient.packageSize} ${ingredient.uom} @ $${ingredient.packageCost.toFixed(2)})`;
+                ingredientsList.appendChild(ingredientItem);
+            });
+            recipeDiv.appendChild(ingredientsList);
+
+            // Add delete button
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('delete-button');
+            deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+            deleteButton.addEventListener('click', () => deleteRecipe(recipeData.id, recipeDiv));
+            recipeDiv.appendChild(deleteButton);
+
+            recipeListDiv.appendChild(recipeDiv);
+        }
+
+        async function deleteRecipe(recipeId, recipeDiv) {
+            try {
+                await deleteDoc(doc(db, 'recipes', recipeId));
+                recipeDiv.remove();
+                alert('¡Receta eliminada con éxito!');
+            } catch (error) {
+                console.error('Error al eliminar la receta: ', error);
+                alert('Error al eliminar la receta.');
+            }
+        }
+
+        fetchRecipes();
+        backButton.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

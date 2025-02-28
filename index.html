@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Costeo de Recetas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div id="main-page">
+            <header>
+                <h1 class="logo">Costeo de Recetas</h1>
+            </header>
+            <main>
+                <button class="menu-item add-recipe">
+                    <span>Agregar Receta</span>
+                    <span style="font-size: 1.5em;font-weight: bold;">+</span>
+                </button>
+                <button class="menu-item" onclick="window.location.href='my-recipes.html'">
+                    <span>Mis Recetas</span>
+                    <span class="icon book-icon">📖</span>
+                </button>
+                <button class="menu-item">
+                    <span>Buscar</span>
+                    <span class="icon search-icon">🔍</span>
+                </button>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle the "Add Recipe" button click
+        document.querySelector('.add-recipe').addEventListener('click', function() {
+            window.location.href = 'costing.html'; // Navigate to costing.html
+        });
+    </script>
+</body>
+</html>
