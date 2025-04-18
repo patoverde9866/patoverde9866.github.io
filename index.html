@@ -1,55 +1,114 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <title>Supabase Upload</title>
+    <title>Firebase Upload (V9+ Modular)</title>
   </head>
   <body>
-    <h2>Upload File to Supabase</h2>
+    <h2>Upload File to Firebase Storage (V9+ Modular)</h2>
     <input type="file" id="fileInput" />
     <button onclick="uploadFile()">Upload</button>
     <p id="status"></p>
 
-    <script>
-      const SUPABASE_URL = 'https://nvhszxgwiikhcupgevgb.supabase.co';
-      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52aHN6eGd3aWlraGN1cGdldmdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MTkzMDEsImV4cCI6MjA2MDQ5NTMwMX0.potwT9luhWxmWnmDMNWQ74NjMJboaOWAOfo8_Zz1Gb4';
-      const BUCKET = 'uploads';
+    <script type="module">
+      // Import functions from the Firebase SDK modules (CDN URLs)
+      // Using v10+ as it's the current standard for the modular SDK
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+      import { getStorage, ref, uploadBytes } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
+      // No need to import functions SDK if just using fetch for the HTTPS call
+
+      // Replace with your project's Firebase configuration object
+      const firebaseConfig = {
+        apiKey: "AIzaSyD6CNwuebJ9Dhb_fkj9pVxDYQh28B2QDzk",
+        authDomain: "tiitox-a2b13.firebaseapp.com",
+        projectId: "tiitox-a2b13",
+        storageBucket: "tiitox-a2b13.firebasestorage.app",
+        messagingSenderId: "349047156972",
+        appId: "1:349047156972:web:14f8e94ffa75700f92b5c9"
+      };
+
+      // TODO: Replace with your *actual* Cloud Function HTTPS trigger URL
+      const NOTIFY_FUNCTION_URL = 'YOUR_CLOUD_FUNCTION_TRIGGER_URL/notifyUpload'; // e.g., https://us-central1-your-project-id.cloudfunctions.net/notifyUpload
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+
+      // Get Firebase services instances
+      const storage = getStorage(app); // Pass the initialized app
+
+      // --- Functions ---
 
       async function uploadFile() {
         const status = document.getElementById('status');
-        const file = document.getElementById('fileInput').files[0];
-        if (!file) return alert('Select a file first');
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
 
-        const { data, error } = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${file.name}`, {
-          method: 'POST',
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Content-Type': file.type,
-            'x-upsert': 'true'
-          },
-          body: file
-        }).then(res => res.json()).catch(err => ({ error: err }));
+        if (!file) {
+          alert('Select a file first');
+          return;
+        }
 
-        if (error) {
-          status.textContent = 'Upload failed';
-          console.error(error);
-        } else {
+        status.textContent = 'Uploading...';
+
+        try {
+          // 1. Create a storage reference using the 'ref' function
+          // Files will be saved in the 'uploads/' directory
+          const fileRef = ref(storage, `uploads/${file.name}`); // Pass storage instance
+
+          // 2. Upload the file using 'uploadBytes' function
+          const snapshot = await uploadBytes(fileRef, file); // Pass ref and file
+
+          // 3. Handle successful upload
           status.textContent = 'Upload successful';
-          notifyEdgeFunction(file.name);
+          console.log('Uploaded a blob or file!', snapshot);
+
+          // 4. Notify the Cloud Function
+          await notifyCloudFunction(file.name);
+
+        } catch (error) {
+          // 5. Handle errors
+          status.textContent = 'Upload failed';
+          console.error('Upload Error:', error);
+          alert(`Upload failed: ${error.message}`);
+        } finally {
+          // Optional: Clear the file input after upload attempt
+          // fileInput.value = '';
         }
       }
 
-      async function notifyEdgeFunction(filename) {
-        const res = await fetch('https://nvhszxgwiikhcupgevgb.supabase.co/functions/v1/notify-upload', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ filename })
-        });
-        console.log(await res.text());
+      async function notifyCloudFunction(filename) {
+        // This function uses the native fetch API, so it remains structurally unchanged.
+        const status = document.getElementById('status'); // Get status element for potential updates
+        console.log(`Notifying Cloud Function about: ${filename}`);
+        try {
+          const response = await fetch(NOTIFY_FUNCTION_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              // Add authentication headers if your function requires it
+            },
+            body: JSON.stringify({ filename: filename })
+          });
+
+          if (!response.ok) {
+            throw new Error(`Cloud Function returned status: ${response.status}`);
+          }
+
+          const responseData = await response.text(); // Or response.json()
+          console.log('Cloud Function response:', responseData);
+
+        } catch (error) {
+          console.error('Error calling Cloud Function:', error);
+          // Update status to indicate notification failure but upload success
+          status.textContent = 'Upload successful, but function notification failed.';
+          alert(`Failed to notify backend function: ${error.message}`);
+        }
       }
+
+      // --- Make function accessible globally for the button ---
+      // Since we are in a module, functions are not global by default.
+      // We need to attach the uploadFile function to the window object
+      // so the inline `onclick="uploadFile()"` handler can find it.
+      window.uploadFile = uploadFile;
+
     </script>
   </body>
 </html>
