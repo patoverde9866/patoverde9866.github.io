@@ -1,0 +1,408 @@
+<html lang="en" class="responsive nprogress-done">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <meta charset="utf-8">
+    <title id="product-title">Product Name</title>
+    <link href="//fonts.googleapis.com/css?family=Caveat:300italic,400italic,500italic,600italic,700italic,800italic,100,200,300,400,500,600,700,800&amp;subset=cyrillic-ext,greek-ext,latin,latin-ext,cyrillic,greek,vietnamese" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Poppins:300italic,400italic,500italic,600italic,700italic,800italic,100,200,300,400,500,600,700,800&amp;subset=cyrillic-ext,greek-ext,latin,latin-ext,cyrillic,greek,vietnamese" rel="stylesheet" type="text/css">
+    <link href="//www.mrylens.com/cdn/shop/t/2/assets/rt.application.scss.css?v=162363876203454229851700551495" rel="stylesheet" type="text/css" media="all">
+    <link href="//www.mrylens.com/cdn/shop/t/2/assets/rt.vendors.scss.css?v=163702198971202698871727168676" rel="stylesheet" type="text/css" media="all">
+    <link href="//www.mrylens.com/cdn/shop/t/2/assets/rt.custom.scss.css?v=106877246971634705251700551495" rel="stylesheet" type="text/css" media="all">
+    <link href="//www.mrylens.com/cdn/shop/t/2/assets/custom_code.scss.css?v=86128544736560727421542091396" rel="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" media="screen" href="https://www.mrylens.com/cdn/shopifycloud/portable-wallets/latest/accelerated-checkout-backwards-compat.css" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="//fonts.googleapis.com/css?family=Poppins:400,600" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .product-slider {
+      text-align: center;
+      max-width: 400px;
+      margin: auto;
+    }
+    
+    .slider-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .slider-wrapper img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+    
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 24px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+    
+    .arrow.left {
+      left: 0;
+    }
+    
+    .arrow.right {
+      right: 0;
+    }
+    
+    .thumbnails {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap; /* Allow thumbnails to wrap to the next row */
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .thumbnails img {
+        width: 60px;
+        cursor: pointer;
+        opacity: 0.6;
+        border: 2px solid transparent;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .thumbnails img.selected {
+        opacity: 1;
+        border-color: red;
+    }
+
+    /* Basic Reset / Box Sizing */
+* {
+    box-sizing: border-box; /* Makes managing padding/borders easier */
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif; /* Or your preferred font */
+    background-color: #ffffff; /* Light background for contrast */
+    
+}
+
+/* Payment Box Container */
+.payment-box {
+    background-color: #ffffff; /* White background */
+    border-radius: 8px;        /* Rounded corners */
+    padding: 25px;             /* Internal spacing */
+    max-width: 400px;          /* Max width on larger screens */
+    margin: 20px auto;         /* Centering the box on the page */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: flex;
+    flex-direction: column;    /* Stack elements vertically */
+    align-items: center;       /* Center items horizontally */
+    gap: 15px; /* Space between elements */
+}
+
+/* Price Styling */
+.payment-box .price {
+    font-size: 28px;           /* Larger font size */
+    color: #222222;            /* A slightly softer red */
+    font-weight: bold;
+    margin-bottom: 10px;       /* Extra space below price */
+}
+
+/* Quantity Selector Container */
+.payment-box .quantity-selector {
+    display: flex;
+    align-items: center;       /* Vertically align items */
+    justify-content: center;   /* Center items horizontally */
+    width: 100%;               /* Take full width */
+    margin-bottom: 10px;       /* Space below selector */
+}
+
+/* Quantity Input Field */
+.payment-box #quantity {
+    width: 50px;               /* Slightly wider input */
+    text-align: center;
+    font-size: 18px;
+    padding: 8px 5px;          /* Vertical/Horizontal padding */
+    border: 1px solid #ccc;    /* Subtle border */
+    border-radius: 4px;        /* Slightly rounded corners */
+    margin: 0 10px;            /* Space around the input */
+    background-color: #f9f9f9; /* Slightly off-white background */
+    color: #333;
+}
+
+/* Quantity +/- Buttons */
+.payment-box .quantity-btn {
+    padding: 8px 12px;         /* Button padding */
+    font-size: 20px;           /* Larger font for +/- */
+    font-weight: bold;
+    background-color: #eee;    /* Light grey background */
+    color: #555;              /* Darker grey text */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease; /* Smooth hover effect */
+    line-height: 1; /* Ensure text is centered vertically */
+}
+
+.payment-box .quantity-btn:hover {
+    background-color: #ddd;    /* Darken on hover */
+}
+
+.payment-box .quantity-btn:active {
+    background-color: #ccc;    /* Even darker when clicked */
+}
+
+/* Action Buttons (Common Styles) */
+.payment-box .action-button {
+    width: 100%;               /* Make buttons full width */
+    padding: 12px 20px;        /* Generous padding */
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;        /* Consistent rounded corners */
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease, transform 0.1s ease; /* Smooth transitions */
+}
+
+.payment-box .action-button:hover {
+    opacity: 0.9; /* Slight fade on hover */
+}
+
+.payment-box .action-button:active {
+    transform: scale(0.98); /* Slight shrink effect on click */
+}
+
+
+/* Specific Action Button Styles */
+.payment-box .action-button.buy {
+    background-color: #2ECC71; /* A nice green */
+    color: white;
+}
+
+.payment-box .action-button.card-payment {
+    background-color: #F1C40F; /* A nice yellow */
+    color: #333;              /* Dark text for yellow background */
+}
+
+/* More Payment Options Link */
+.payment-box .more-payment-options {
+    display: block;            /* Make it a block element */
+    text-align: center;
+    font-size: 14px;
+    color: #3498DB;            /* Blue link color */
+    text-decoration: none;     /* Remove underline */
+    margin-top: 5px;           /* A little space above */
+}
+
+.payment-box .more-payment-options:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+</style>
+</head>
+<body>
+    <div class="standard-body">
+        <div id="main" class="main-class">   
+        <div id="shopify-section-mobile-nav" class="shopify-section header-mobile-section">
+            
+            <div id="primary-mobile-nav" data-section-id="mobile-nav" data-section-type="mobile-nav-section">
+                <nav class="mobile-nav-wrapper">
+                    <ul class="mobile-nav">
+                        <li class="mobile-nav__item">
+                            <div class="mobile-nav-icon">
+                                <button type="button"><span></span></button>Close
+                            </div>
+                        </li>
+                        <li class="mobile-nav__item menu-item-has-children">
+                            <a class="mobile-nav__link" href="/collections/oakley.html">Repuestos para Oakley</a>
+                        </li>
+                        <li class="mobile-nav__item">
+                            <a href="/pages/wishlist" class="mobile-nav__link">Repuestos para Arnette</a>
+                        </li>
+                        <li class="mobile-nav__item">
+                            <a class="mobile-nav__link" href="/collections">Repuestos Nasales</a>
+                        </li>
+                        
+                        <li class="mobile-nav__item">
+                            <a href="/pages/wishlist" class="mobile-nav__link">Wish List</a>
+                        </li>
+                        
+        
+                    </ul>
+                </nav>
+                <ul class="mobile-nav-bar">
+                    <li class="mobile-nav-item mobile-nav-icon">
+                        <button type="button"><span></span></button>
+                    </li>
+                    <li class="mobile-nav-item mobile-nav-search">
+                        <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global__symbols-search"></use></svg>
+                    </li>
+                    <li class="mobile-nav-item mobile-nav-profile">
+                        <a href="/account"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global__symbols-profile"></use></svg></a>
+                    </li>
+                    <li class="mobile-nav-item mobile-nav-cart">
+                        <a href="/cart">
+                            <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global__symbols-cart-desktop"></use></svg>
+                            <span class="total_count_ajax">0</span>
+                        </a>
+                    </li>
+                </ul>
+                <form action="/search" method="get" role="search" class="mobile-nav-search-form">
+                    <div class="mobile-nav-search-close"><span></span></div>
+                    <input type="search" name="q" class="input-block-level search-query" placeholder="Search" autocomplete="off">
+                    <div class="autocomplete-results">
+                        <ul class="ui-autocomplete ui-front" style="display: none;"></ul>
+        
+                    </div>
+                    <input type="hidden" name="type" value="product">
+                </form>
+                <div class="mobile-nav-logo text-center">
+                    <div class="container">
+                        <a href="/index.html" title="MryLens">
+                            <img src="/matos.png" style="    max-width: 80%; padding-bottom: 40px;" title="MryLens" alt="MryLens">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+
+    <div class="toolbar-left">
+        <div class="collection-title">
+            <h3 id="product-heading" class="box-heading" style="
+            font-family: Poppins, sans-serif;">Product Name</h3>
+        </div>
+    </div>
+    <div class="product-slider">
+        <div class="slider-wrapper">
+            <button class="arrow left" onclick="slide(-1)">&#10094;</button>
+            <img id="currentImage" src="" alt="Product Image" />
+            <button class="arrow right" onclick="slide(1)">&#10095;</button>
+        </div>
+        <div class="thumbnails"></div>
+        <div class="payment-box">
+            <div class="price" id="product-price">S/0.00</div>
+            <div class="quantity-selector">
+                <button class="quantity-btn" onclick="updateQuantity(-1)">-</button>
+                <input id="quantity" type="text" value="1" readonly>
+                <button class="quantity-btn" onclick="updateQuantity(1)">+</button>
+            </div>
+            <button id="buy-button" class="action-button buy">
+                COMPRAR
+            </button>
+            <button class="action-button card-payment" onclick="openWhatsApp()">
+                Asesor de Ventas
+            </button>
+            <a href="#" class="more-payment-options">Más formas de pago</a>
+        </div>
+    </div>
+    <script>
+        let currentIndex = 0;
+        let productData = {};
+        let currentQuantity = 1;
+    
+        // Fetch product data dynamically
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const productKey = params.get('product');
+    
+            if (!productKey) {
+                alert('Product not found!');
+                return;
+            }
+    
+            try {
+                // Fetch product data from the JSON file
+                const response = await fetch('/products/products.json');
+                const products = await response.json();
+    
+                // Get the specific product data
+                productData = products[productKey];
+                if (!productData) {
+                    alert('Product not found!');
+                    return;
+                }
+    
+                // Populate the page
+                document.getElementById('product-title').textContent = productData.name;
+                document.getElementById('product-heading').textContent = productData.name;
+    
+                // Populate slider images
+                const thumbnailsContainer = document.querySelector('.thumbnails');
+                productData.images.forEach((path, index) => {
+                    const thumb = document.createElement('img');
+                    thumb.className = 'thumb';
+                    if (index === 0) thumb.classList.add('selected');
+                    thumb.src = path;
+                    thumb.alt = `Thumbnail ${index + 1}`;
+                    thumb.onclick = () => selectImage(index);
+                    thumbnailsContainer.appendChild(thumb);
+                });
+    
+                // Initialize the slider
+                updateSlider();
+    
+                // Update the payment box
+                updatePaymentBox();
+            } catch (error) {
+                console.error('Error fetching product data:', error);
+            }
+        });
+    
+        function updateSlider() {
+            document.getElementById('currentImage').src = productData.images[currentIndex];
+            document.querySelectorAll('.thumb').forEach((thumb, index) => {
+                thumb.classList.toggle('selected', index === currentIndex);
+            });
+        }
+    
+        function slide(direction) {
+            currentIndex = (currentIndex + direction + productData.images.length) % productData.images.length;
+            updateSlider();
+        }
+    
+        function selectImage(index) {
+            currentIndex = index;
+            updateSlider();
+        }
+    
+        // Update the payment box when the product data is loaded
+        function updatePaymentBox() {
+            const priceElement = document.getElementById('product-price');
+            const buyButton = document.getElementById('buy-button');
+    
+            // Set the price
+            priceElement.textContent = productData.price;
+    
+            // Update the "Comprar" button to redirect to the checkout page
+            buyButton.onclick = () => {
+                const selectedImage = productData.images[currentIndex];
+                const productName = encodeURIComponent(productData.name);
+                const productColor = encodeURIComponent(selectedImage);
+                const productPrice = encodeURIComponent(productData.price); // Include the price
+                const checkoutUrl = `/products/testmerge.html?product=${productName}&color=${productColor}&quantity=${currentQuantity}&price=${productPrice}`;
+                window.location.href = checkoutUrl; // Redirect to the checkout page
+            };
+        }
+    
+        // Update quantity
+        function updateQuantity(change) {
+            currentQuantity = Math.max(1, currentQuantity + change);
+            document.getElementById('quantity').value = currentQuantity;
+        }
+    
+        function openWhatsApp() {
+            const phoneNumber = "+51912446440"; // Replace with the sales advisor's WhatsApp number
+            const message = `Hola, estoy interesado en el producto: ${productData.name} con la opción de color: ${productData.images[currentIndex]}`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            window.open(whatsappUrl, "_blank");
+        }
+    </script>
+</body>
+</html>

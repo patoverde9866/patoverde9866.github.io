@@ -1,0 +1,166 @@
+{
+    "holbrook": {
+      "name": "Holbrook Lunas de Repuesto",
+      "images": [
+        "/images/holbrook/mry-holbrook-stealth-black.webp",
+        "/images/holbrook/mry-holbrook-24k-gold.webp",
+        "/images/holbrook/mry-holbrook-fire-red.webp",
+        "/images/holbrook/mry-holbrook-silver-titanium.webp",
+        "/images/holbrook/mry-holbrook-ice-blue.webp",
+        "/images/holbrook/mry-holbrook-midnight-sun.webp",
+        "/images/holbrook/mry-holbrook-emerald-green.webp",
+        "/images/holbrook/mry-holbrook-plasma-purple.webp",
+        "/images/holbrook/mry-holbrook-bronze-brown.webp"
+      ],
+      "price": "S/119.00"
+    },
+    "batwolf": {
+      "name": "Batwolf Lunas de Repuesto",
+      "images": [
+        "/images/batwolf/mry-batwolf-stealth-black.webp",
+        "/images/batwolf/mry-batwolf-24k-gold.webp",
+        "/images/batwolf/mry-batwolf-fire-red.webp",
+        "/images/batwolf/mry-batwolf-silver-titanium.webp",
+        "/images/batwolf/mry-batwolf-ice-blue.webp",
+        "/images/batwolf/mry-batwolf-midnight-sun.webp",
+        "/images/batwolf/mry-batwolf-emerald-green.webp",
+        "/images/batwolf/mry-batwolf-plasma-purple.webp",
+        "/images/batwolf/mry-batwolf-bronze-brown.webp"
+      ],
+      "price": "S/119.00"
+    },
+    "fuel-cell": {
+      "name": "Fuel Cell Lunas de Repuesto",
+      "images": [
+        "/images/fuel-cell/fuel-cell-stealth-black.webp",
+        "/images/fuel-cell/fuel-cell-24k-gold.webp",
+        "/images/fuel-cell/fuel-cell-fire-red.webp",
+        "/images/fuel-cell/fuel-cell-silver-titanium.webp",
+        "/images/fuel-cell/fuel-cell-ice-blue.webp",
+        "/images/fuel-cell/fuel-cell-midnight-sun.webp",
+        "/images/fuel-cell/fuel-cell-emerald-green.webp",
+        "/images/fuel-cell/fuel-cell-plasma-purple.webp",
+        "/images/fuel-cell/fuel-cell-bronze-brown.webp"
+      ],
+      "price": "S/119.00"
+    },
+    "turbine": {
+      "name": "Turbine Lunas de Repuesto",
+      "images": [
+        "/images/turbine/mry-turbine-stealth-black.webp",
+        "/images/turbine/mry-turbine-24k-gold.webp",
+        "/images/turbine/mry-turbine-fire-red.webp",
+        "/images/turbine/mry-turbine-silver-titanium.webp",
+        "/images/turbine/mry-turbine-ice-blue.webp",
+        "/images/turbine/mry-turbine-midnight-sun.webp",
+        "/images/turbine/mry-turbine-emerald-green.webp",
+        "/images/turbine/mry-turbine-plasma-purple.webp",
+        "/images/turbine/mry-turbine-bronze-brown.webp"
+      ],
+      "price": "S/119.00"
+    },
+    "radar-ev-path": {
+      "name": "Radar Lunas de Repuesto",
+      "images": [
+        "/images/radar-ev-path/mry-radar-ev-path-stealth-black.webp",
+        "/images/radar-ev-path/mry-radar-ev-path-24k-gold.webp",
+        "/images/radar-ev-path/mry-radar-ev-path-fire-red.webp",
+        "/images/radar-ev-path/mry-radar-ev-path-silver-titanium.webp",
+        "/images/radar-ev-path/mry-radar-ev-path-ice-blue.webp",
+        "/images/radar-ev-path/mry-radar-ev-path-midnight-sun.webp",
+        "/images/radar-ev-path/mry-radar-ev-path-emerald-green.webp",
+        "/images/radar-ev-path/mry-radar-ev-path-plasma-purple.webp",
+        "/images/radar-ev-path/mry-radar-ev-path-bronze-brown.webp"
+      ],
+      "price": "S/127.00"
+    },
+    "turbine-rotor": {
+      "name": "Turbine Rotor Lunas de Repuesto",
+      "images": [
+        "/images/turbine-rotor/mry-turbine-rotor-stealth-black.webp",
+        "/images/turbine-rotor/mry-turbine-rotor-24k-gold.webp",
+        "/images/turbine-rotor/mry-turbine-rotor-fire-red.webp",
+        "/images/turbine-rotor/mry-turbine-rotor-silver-titanium.webp",
+        "/images/turbine-rotor/mry-turbine-rotor-ice-blue.webp",
+        "/images/turbine-rotor/mry-turbine-rotor-midnight-sun.webp",
+        "/images/turbine-rotor/mry-turbine-rotor-emerald-green.webp",
+        "/images/turbine-rotor/mry-turbine-rotor-plasma-purple.webp",
+        "/images/turbine-rotor/mry-turbine-rotor-bronze-brown.webp"
+      ],
+      "price": "S/123.00"
+    },
+    "jawbreaker": {
+      "name": "Jawbreaker Lunas de Repuesto",
+      "images": [
+        "/images/jawbreaker/mry-jawbreaker-stealth-black.webp",
+        "/images/jawbreaker/mry-jawbreaker-24k-gold.webp",
+        "/images/jawbreaker/mry-jawbreaker-fire-red.webp",
+        "/images/jawbreaker/mry-jawbreaker-silver-titanium.webp",
+        "/images/jawbreaker/mry-jawbreaker-ice-blue.webp",
+        "/images/jawbreaker/mry-jawbreaker-midnight-sun.webp",
+        "/images/jawbreaker/mry-jawbreaker-emerald-green.webp",
+        "/images/jawbreaker/mry-jawbreaker-plasma-purple.webp",
+        "/images/jawbreaker/mry-jawbreaker-bronze-brown.webp"
+      ],
+      "price": "S/127.00"
+    },
+    "gascan": {
+      "name": "Gascan Lunas de Repuesto",
+      "images": [
+        "/images/gascan/gascan-stealth-black.webp",
+        "/images/gascan/gascan-24k-gold.webp",
+        "/images/gascan/gascan-fire-red.webp",
+        "/images/gascan/gascan-silver-titanium.webp",
+        "/images/gascan/gascan-ice-blue.webp",
+        "/images/gascan/gascan-midnight-sun.webp",
+        "/images/gascan/gascan-emerald-green.webp",
+        "/images/gascan/gascan-plasma-purple.webp",
+        "/images/gascan/gascan-bronze-brown.webp"
+      ],
+      "price": "S/120.00"
+    },
+    "sutro": {
+      "name": "Sutro Lunas de Repuesto",
+      "images": [
+        "/images/sutro/SUTRO-Bronze_Brown.webp"
+      ],
+      "price": "S/119.00"
+    },
+    "frogskins": {
+      "name": "Frogskins Lunas de Repuesto",
+      "images": [
+        "/images/frogskins/frogskins-stealth-black.webp",
+        "/images/frogskins/frogskins-24k-gold.webp",
+        "/images/frogskins/frogskins-fire-red.webp",
+        "/images/frogskins/frogskins-silver-titanium.webp",
+        "/images/frogskins/frogskins-ice-blue.webp",
+        "/images/frogskins/frogskins-midnight-sun.webp",
+        "/images/frogskins/frogskins-emerald-green.webp",
+        "/images/frogskins/frogskins-plasma-purple.webp",
+        "/images/frogskins/frogskins-bronze-brown.webp"
+      ],
+      "price": "S/119.00"
+    },
+    "split-shot": {
+      "name": "Split Shot Lunas de Repuesto",
+      "images": [
+        "/images/split-shot/split-shot-stealth-black.webp",
+        "/images/split-shot/split-shot-24k-gold.webp",
+        "/images/split-shot/split-shot-fire-red.webp",
+        "/images/split-shot/split-shot-silver-titanium.webp",
+        "/images/split-shot/split-shot-ice-blue.webp",
+        "/images/split-shot/split-shot-midnight-sun.webp",
+        "/images/split-shot/split-shot-emerald-green.webp",
+        "/images/split-shot/split-shot-plasma-purple.webp",
+        "/images/split-shot/split-shot-bronze-brown.webp"
+      ],
+      "price": "S/127.00"
+    },
+    "flight-jacket": {
+      "name": "Flight Jacket Lunas de Repuesto",
+      "images": [
+        "/images/flight-jacket/Oakley-Flight-Jacket-Prizm.webp"
+      ],
+      "price": "S/127.00"
+    }
+}
